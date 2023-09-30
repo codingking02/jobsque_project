@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jobsque_amit_project/widgets/active_job_custom.dart';
-import 'package:jobsque_amit_project/widgets/custom_button.dart';
+
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class Activejobs extends StatefulWidget {

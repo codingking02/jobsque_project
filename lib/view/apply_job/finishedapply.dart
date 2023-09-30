@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jobsque_amit_project/widgets/custom_jobtypecont.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class FinishedApply extends StatefulWidget {

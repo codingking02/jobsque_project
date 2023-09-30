@@ -215,6 +215,7 @@ class _ApplyJob1State extends State<ApplyJob1> {
                         final bool emailValid = RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                         ).hasMatch(value!);
+                        // ignore: unnecessary_null_comparison
                         if (value == null || value.isEmpty) {
                           return "must enter an email";
                         } else if (!emailValid) {

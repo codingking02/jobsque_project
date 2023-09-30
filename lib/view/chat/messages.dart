@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';
-import 'package:provider/provider.dart';
-
 import '../../widgets/widgets.dart';
 
 class Messages extends StatefulWidget {

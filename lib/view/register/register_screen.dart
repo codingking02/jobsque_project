@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/controllers/register_controller.dart';
-import 'package:jobsque_amit_project/model/user_api_model.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 

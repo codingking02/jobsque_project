@@ -47,6 +47,49 @@ class HttpConnections {
     }
   }
 
+  Future<Post> createloginPost(
+    String email,
+    String password,
+    BuildContext context,
+    Function function,
+  ) async {
+    Map mybody = {
+      'email': email,
+      'password': password,
+    };
+    Response response = await client.post(
+      Uri.parse(
+        baseUrl + postEndPoint,
+      ),
+      body: jsonEncode(
+        mybody,
+      ),
+      headers: {
+        'Content-Type': 'application/json', // Set the content type to JSON
+      },
+    );
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      print('post created');
+      Map<String, dynamic> _map = jsonDecode(response.body);
+      Post _post = Post.fromJson(
+        _map,
+      );
+      function();
+      return _post;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Invalid Username or Password',
+          ),
+        ),
+      );
+      throw Exception("failed to create posts");
+    }
+  }
+
   Future<void> sendFormData(
     String name,
     String email,
@@ -85,6 +128,49 @@ class HttpConnections {
         SnackBar(
           content: Text(
             'Email Already been taken',
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> loginwithapi(
+    String email,
+    String password,
+    BuildContext context,
+    Function function,
+  ) async {
+    final apiUrl = Uri.parse(
+      baseUrl + postEndPointLogin,
+    );
+
+    // Create a new multipart request
+    final request = varHttp.MultipartRequest('POST', apiUrl);
+
+    // Add form fields to the request
+
+    request.fields['email'] = email;
+    request.fields['password'] = password;
+
+    // Send the request
+    final response = await request.send();
+
+    // Check the response status code
+    if (response.statusCode == 200) {
+      print(
+        'post created',
+      );
+      // Request was successful, handle the response data here
+      final responseData = await response.stream.bytesToString();
+      print('API response: $responseData');
+      function();
+    } else {
+      // Request failed, handle the error
+      print('API request failed with status code ${response.statusCode}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Email or Password is Invalid",
           ),
         ),
       );

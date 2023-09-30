@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jobsque_amit_project/controllers/register_controller.dart';
+import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
+import 'package:jobsque_amit_project/view/register/register_screen.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -10,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  HttpConnections registerhttp = HttpConnections();
   TextEditingController namecontroller = TextEditingController();
 
   TextEditingController passcontroller = TextEditingController();
@@ -18,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool ischecked = false;
   bool istextemptypass = false;
   bool ispressedeyeicon = false;
+
   Color buttoncolor = Color.fromRGBO(
     209,
     213,
@@ -30,6 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
     128,
     1,
   );
+
+  bool istextemptyemail = false;
+
+  bool isbrightemail = false;
+
+  var emailcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,23 +73,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 44,
               ),
               Container(
+                height: 60,
                 margin: EdgeInsets.symmetric(
                   horizontal: 24,
                 ),
-                height: 60,
                 child: TextFormField(
                   onChanged: (value) {
                     if (value.length > 0) {
-                      istextemptyname = true;
+                      istextemptyemail = true;
+                      isbrightemail = true;
                     } else {
-                      istextemptyname = false;
+                      istextemptyemail = false;
+                      isbrightemail = false;
                     }
                     setState(() {});
                   },
-                  keyboardType: TextInputType.name,
-                  controller: namecontroller,
+                  keyboardType: TextInputType.emailAddress,
+                  controller: emailcontroller,
                   decoration: InputDecoration(
-                    hintText: 'Username',
+                    hintText: 'Email',
                     hintStyle: TextStyle(
                       color: Color.fromRGBO(
                         156,
@@ -91,9 +104,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: EdgeInsets.only(
                         left: 5,
                       ),
-                      child: Image.asset(
-                        'assets/profile.png',
-                      ),
+                      child: isbrightemail
+                          ? Image.asset(
+                              'assets/brightsms.png',
+                            )
+                          : Image.asset(
+                              'assets/sms.png',
+                            ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(
@@ -108,7 +125,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         8,
                       ),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      ),
+                    ),
                   ),
+                  validator: (String? value) {
+                    final bool emailValid = RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                    ).hasMatch(value!);
+                    // ignore: unnecessary_null_comparison
+                    if (value == null || value.isEmpty) {
+                      return "must enter an email";
+                    } else if (!emailValid) {
+                      return "enter a valid email";
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
               ),
               SizedBox(
@@ -181,6 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+                  // ignore: body_might_complete_normally_nullable
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return "must enter a password";
@@ -285,15 +321,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         letterSpacing: 0.14,
                       ),
                     ),
-                    Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Color(0xFF3366FF),
-                        fontSize: 14,
-                        fontFamily: 'SF Pro Display',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                        letterSpacing: 0.14,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return Register();
+                            },
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Register',
+                        style: TextStyle(
+                          color: Color(0xFF3366FF),
+                          fontSize: 14,
+                          fontFamily: 'SF Pro Display',
+                          fontWeight: FontWeight.w500,
+                          height: 1.40,
+                          letterSpacing: 0.14,
+                        ),
                       ),
                     )
                   ],
@@ -319,7 +367,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     backgroundColor: MaterialStateProperty.resolveWith(
                       (states) {
-                        if (istextemptyname == true &&
+                        if (istextemptyemail == true &&
                             istextemptypass == true) {
                           return Color.fromRGBO(51, 102, 255, 1);
                         } else {
@@ -330,14 +378,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) {
-                            return LoginScreen();
-                          }),
-                        ),
-                      );
+                      await registerhttp.loginwithapi(
+                          emailcontroller.text, passcontroller.text, context,
+                          () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return HomeScreen();
+                          },
+                        ));
+                      });
+
                       // Obtain shared preferences.
 
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -359,7 +409,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     'Login',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: istextemptyname == true && istextemptypass == true
+                      color: istextemptyemail == true && istextemptypass == true
                           ? Colors.white
                           : textcolor,
                       fontSize: 16,
