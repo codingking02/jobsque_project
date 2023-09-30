@@ -439,7 +439,9 @@ class _RegisterState extends State<Register> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) {},
+                                builder: (context) {
+                                  return LoginScreen();
+                                },
                               ),
                             );
                           },
