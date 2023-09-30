@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/dio/dio_connection.dart';
+import 'package:jobsque_amit_project/model/profile_model.dart';
+import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class HomeScreenWidget extends StatefulWidget {
-  const HomeScreenWidget({super.key});
-
+  HomeScreenWidget({
+    super.key,
+  });
+  String email = HomeScreen.email;
   @override
   State<HomeScreenWidget> createState() => _HomeScreenWidgetState();
 }
@@ -37,30 +41,16 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FutureBuilder(
-                        future: dioConnection.getusersdata(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          } else if (snapshot.hasData) {
-                            return Text(
-                              'Hi, ${snapshot.data![1].name}👋',
-                              style: TextStyle(
-                                color: Color(0xFF111827),
-                                fontSize: 24,
-                                fontFamily: 'SF Pro Display',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                                letterSpacing: 0.24,
-                              ),
-                            );
-                          } else {
-                            return Text(
-                              '',
-                            );
-                          }
-                        },
+                      Text(
+                        'Hi, ${widget.email}👋',
+                        style: TextStyle(
+                          color: Color(0xFF111827),
+                          fontSize: 24,
+                          fontFamily: 'SF Pro Display',
+                          fontWeight: FontWeight.w500,
+                          height: 1.40,
+                          letterSpacing: 0.24,
+                        ),
                       ),
                       SizedBox(
                         height: 8,

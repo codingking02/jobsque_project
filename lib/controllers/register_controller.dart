@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
 import 'package:http/http.dart';
+import 'package:jobsque_amit_project/model/profile_model.dart';
 
 import '../model/user_api_model.dart';
 
@@ -117,6 +118,7 @@ class HttpConnections {
       print(
         'post created',
       );
+
       // Request was successful, handle the response data here
       final responseData = await response.stream.bytesToString();
       print('API response: $responseData');
@@ -135,6 +137,7 @@ class HttpConnections {
   }
 
   Future<void> loginwithapi(
+    String name,
     String email,
     String password,
     BuildContext context,
@@ -149,6 +152,7 @@ class HttpConnections {
 
     // Add form fields to the request
 
+    request.fields['name'] = name;
     request.fields['email'] = email;
     request.fields['password'] = password;
 

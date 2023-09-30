@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
+import 'package:jobsque_amit_project/view/register/register_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -23,7 +25,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: LoginScreen(),
+      home: LoginScreen(
+        email: '',
+      ),
     );
   }
 }

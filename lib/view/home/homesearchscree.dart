@@ -7,7 +7,10 @@ import 'package:jobsque_amit_project/view/porfile_settings/profile.dart';
 import 'package:jobsque_amit_project/view/saved_notification.dart/notificatio_ui.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  static String email = '';
+  HomeScreen({
+    super.key,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -23,11 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   int _selectedindex = 0;
-  bool ishome = true;
-  bool ismessage = false;
-  bool isapplied = false;
-  bool issaved = false;
-  bool isprofile = false;
 
   @override
   Widget build(BuildContext context) {

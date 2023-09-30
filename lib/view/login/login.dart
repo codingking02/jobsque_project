@@ -6,7 +6,11 @@ import 'package:jobsque_amit_project/view/register/register_screen.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  String email;
+  LoginScreen({
+    super.key,
+    required this.email,
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -38,9 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool istextemptyemail = false;
 
-  bool isbrightemail = false;
-
-  var emailcontroller = TextEditingController();
+  bool isbrightname = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,25 +75,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 44,
               ),
               Container(
-                height: 60,
                 margin: EdgeInsets.symmetric(
                   horizontal: 24,
                 ),
+                height: 60,
                 child: TextFormField(
                   onChanged: (value) {
                     if (value.length > 0) {
-                      istextemptyemail = true;
-                      isbrightemail = true;
+                      istextemptyname = true;
+                      isbrightname = true;
                     } else {
-                      istextemptyemail = false;
-                      isbrightemail = false;
+                      istextemptyname = false;
+                      isbrightname = false;
                     }
                     setState(() {});
                   },
-                  keyboardType: TextInputType.emailAddress,
-                  controller: emailcontroller,
+                  onTap: () {},
+                  keyboardType: TextInputType.name,
+                  controller: namecontroller,
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                    hintText: 'Username',
                     hintStyle: TextStyle(
                       color: Color.fromRGBO(
                         156,
@@ -104,12 +107,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: EdgeInsets.only(
                         left: 5,
                       ),
-                      child: isbrightemail
+                      child: isbrightname
                           ? Image.asset(
-                              'assets/brightsms.png',
+                              'assets/brightprofile.png',
                             )
                           : Image.asset(
-                              'assets/sms.png',
+                              'assets/profile.png',
                             ),
                     ),
                     enabledBorder: OutlineInputBorder(
@@ -125,25 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         8,
                       ),
                     ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.red,
-                      ),
-                    ),
                   ),
-                  validator: (String? value) {
-                    final bool emailValid = RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                    ).hasMatch(value!);
-                    // ignore: unnecessary_null_comparison
-                    if (value == null || value.isEmpty) {
-                      return "must enter an email";
-                    } else if (!emailValid) {
-                      return "enter a valid email";
-                    } else {
-                      return null;
-                    }
-                  },
                 ),
               ),
               SizedBox(
@@ -378,9 +363,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
-                      await registerhttp.loginwithapi(
-                          emailcontroller.text, passcontroller.text, context,
-                          () {
+                      await registerhttp.loginwithapi(namecontroller.text,
+                          widget.email, passcontroller.text, context, () {
+                        widget.email = HomeScreen.email;
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
                             return HomeScreen();

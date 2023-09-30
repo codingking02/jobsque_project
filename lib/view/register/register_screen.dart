@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/controllers/register_controller.dart';
+import 'package:jobsque_amit_project/model/profile_model.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
@@ -372,7 +373,9 @@ class _RegisterState extends State<Register> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return LoginScreen();
+                                return LoginScreen(
+                                  email: emailcontroller.text,
+                                );
                               },
                             ),
                           );
@@ -435,11 +438,16 @@ class _RegisterState extends State<Register> {
                           passcontroller.text,
                           context,
                           () {
+                            Profilemodel.name = namecontroller.text;
+                            Profilemodel.email = emailcontroller.text;
+                            Profilemodel.password = passcontroller.text;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return LoginScreen();
+                                  return LoginScreen(
+                                    email: emailcontroller.text,
+                                  );
                                 },
                               ),
                             );
