@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jobsque_amit_project/provider/resetemailprovider.dart';
+import 'package:jobsque_amit_project/view/login/createpass.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
 import 'package:provider/provider.dart';
 
@@ -186,6 +187,14 @@ class _ForgotPassState extends State<ForgotPass> {
                       );
                   print(
                     "${context.read<resetemailprovider>().resetemail}",
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return CreatePass();
+                      },
+                    ),
                   );
                 },
                 child: Text(

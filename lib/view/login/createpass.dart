@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/controllers/login_controller.dart';
+import 'package:jobsque_amit_project/provider/resetemailprovider.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class CreatePass extends StatefulWidget {
   const CreatePass({super.key});
@@ -12,6 +15,7 @@ class CreatePass extends StatefulWidget {
 }
 
 class _CreatePassState extends State<CreatePass> {
+  LoginConnection loginConnection = LoginConnection();
   TextEditingController passcontroller = TextEditingController();
   TextEditingController passcontroller2 = TextEditingController();
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
@@ -303,7 +307,14 @@ class _CreatePassState extends State<CreatePass> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (_formkey.currentState!.validate()) {
+                        await loginConnection.updatePassword(
+                          context.read<resetemailprovider>().resetemail,
+                          passcontroller2.text,
+                        );
+                      }
+                    },
                     child: Text(
                       'Open Email App',
                       textAlign: TextAlign.center,

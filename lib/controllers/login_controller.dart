@@ -2,13 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
 import 'package:jobsque_amit_project/provider/accountemailprovider.dart';
+import 'package:jobsque_amit_project/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
+import 'package:jobsque_amit_project/provider/tokenprovider.dart';
 import 'package:provider/provider.dart';
 
 class LoginConnection {
   static String baseUrl = "https://project2.amit-learning.com/api/";
-
   static String postEndPointLogin = "auth/login";
+  final client = varHttp.Client();
   Future<void> loginwithapi(
     String email,
     String password,
@@ -40,6 +42,7 @@ class LoginConnection {
       final jsonResponse = json.decode(responseData);
       print(' User name :  ${jsonResponse["user"]["name"]}');
       print(' Email :  ${jsonResponse["user"]["email"]}');
+      print(' Token :  ${jsonResponse["token"]}');
 
       print(
         'API response: $jsonResponse',
@@ -49,6 +52,12 @@ class LoginConnection {
           );
       context.read<AccountEmailProvider>().setaccountemail(
             jsonResponse["user"]["email"],
+          );
+      context.read<TokenProvider>().settoken(
+            jsonResponse["token"],
+          );
+      context.read<PasswordProvider>().setpass(
+            password,
           );
       responseData;
       print(request.fields);
@@ -63,6 +72,39 @@ class LoginConnection {
           ),
         ),
       );
+    }
+  }
+
+  Future<void> updatePassword(String email, String newPassword) async {
+    final Map<String, String> data = {
+      'email': email,
+      'password': newPassword,
+    };
+
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      final response = await client.post(
+        Uri.parse(
+          baseUrl + postEndPointLogin,
+        ),
+        headers: headers,
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        // Password updated successfully.
+        print('Password updated successfully');
+      } else {
+        // Handle error cases here.
+        print('Failed to update password. Status code: ${response.statusCode}');
+        print('Response: ${response.body}');
+      }
+    } catch (e) {
+      // Handle network errors.
+      print('Error: $e');
     }
   }
 }

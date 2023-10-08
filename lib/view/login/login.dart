@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jobsque_amit_project/controllers/login_controller.dart';
 import 'package:jobsque_amit_project/controllers/register_controller.dart';
+import 'package:jobsque_amit_project/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/view/register/register_screen.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({
@@ -394,6 +396,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ));
                       });
+                      print(
+                        context.read<PasswordProvider>().password,
+                      );
 
                       // Obtain shared preferences.
 
