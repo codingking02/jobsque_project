@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/dio/dio_connection.dart';
 import 'package:jobsque_amit_project/model/profile_model.dart';
+import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreenWidget extends StatefulWidget {
   HomeScreenWidget({
@@ -42,7 +44,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hi, ${widget.email}👋',
+                        'Hi, ${context.watch<Profilename>().username}👋',
                         style: TextStyle(
                           color: Color(0xFF111827),
                           fontSize: 24,

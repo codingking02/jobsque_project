@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
 import 'package:http/http.dart';
 import 'package:jobsque_amit_project/model/profile_model.dart';
+import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
+import 'package:provider/provider.dart';
 
 import '../model/user_api_model.dart';
 
@@ -137,7 +139,6 @@ class HttpConnections {
   }
 
   Future<void> loginwithapi(
-    String name,
     String email,
     String password,
     BuildContext context,
@@ -152,7 +153,6 @@ class HttpConnections {
 
     // Add form fields to the request
 
-    request.fields['name'] = name;
     request.fields['email'] = email;
     request.fields['password'] = password;
 
@@ -166,7 +166,17 @@ class HttpConnections {
       );
       // Request was successful, handle the response data here
       final responseData = await response.stream.bytesToString();
-      print('API response: $responseData');
+      final jsonResponse = json.decode(responseData);
+      print(' User name :  ${jsonResponse["user"]["name"]}');
+
+      print(
+        'API response: $jsonResponse',
+      );
+      context.read<Profilename>().setname(
+            jsonResponse["user"]["name"],
+          );
+      responseData;
+      print(request.fields);
       function();
     } else {
       // Request failed, handle the error

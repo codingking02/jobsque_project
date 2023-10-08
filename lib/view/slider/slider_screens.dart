@@ -18,8 +18,8 @@ class _SliderUiState extends State<SliderUi> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          gettopbarimage(),
           Expanded(
             child: PageView(
               onPageChanged: (value) {
@@ -55,7 +55,7 @@ class _SliderUiState extends State<SliderUi> {
           ),
           Container(
             margin: EdgeInsets.only(
-              bottom: 40,
+              bottom: 30,
             ),
             child: SmoothPageIndicator(
               effect: WormEffect(

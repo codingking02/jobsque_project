@@ -373,9 +373,7 @@ class _RegisterState extends State<Register> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return LoginScreen(
-                                  email: emailcontroller.text,
-                                );
+                                return LoginScreen();
                               },
                             ),
                           );
@@ -445,9 +443,7 @@ class _RegisterState extends State<Register> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return LoginScreen(
-                                    email: emailcontroller.text,
-                                  );
+                                  return LoginScreen();
                                 },
                               ),
                             );

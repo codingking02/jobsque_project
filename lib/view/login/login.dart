@@ -6,10 +6,8 @@ import 'package:jobsque_amit_project/view/register/register_screen.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class LoginScreen extends StatefulWidget {
-  String email;
   LoginScreen({
     super.key,
-    required this.email,
   });
 
   @override
@@ -43,6 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool istextemptyemail = false;
 
   bool isbrightname = false;
+
+  var emailcontroller = TextEditingController();
+
+  bool isbrightemail = false;
 
   @override
   Widget build(BuildContext context) {
@@ -82,19 +84,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextFormField(
                   onChanged: (value) {
                     if (value.length > 0) {
-                      istextemptyname = true;
-                      isbrightname = true;
+                      istextemptyemail = true;
+                      isbrightemail = true;
                     } else {
-                      istextemptyname = false;
-                      isbrightname = false;
+                      istextemptyemail = false;
+                      isbrightemail = false;
                     }
                     setState(() {});
                   },
-                  onTap: () {},
-                  keyboardType: TextInputType.name,
-                  controller: namecontroller,
+                  keyboardType: TextInputType.emailAddress,
+                  controller: emailcontroller,
                   decoration: InputDecoration(
-                    hintText: 'Username',
+                    hintText: 'Email',
                     hintStyle: TextStyle(
                       color: Color.fromRGBO(
                         156,
@@ -107,12 +108,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: EdgeInsets.only(
                         left: 5,
                       ),
-                      child: isbrightname
+                      child: isbrightemail
                           ? Image.asset(
-                              'assets/brightprofile.png',
+                              'assets/brightsms.png',
                             )
                           : Image.asset(
-                              'assets/profile.png',
+                              'assets/sms.png',
                             ),
                     ),
                     enabledBorder: OutlineInputBorder(
@@ -128,7 +129,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         8,
                       ),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      ),
+                    ),
                   ),
+                  validator: (String? value) {
+                    final bool emailValid = RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                    ).hasMatch(value!);
+                    if (value == null || value.isEmpty) {
+                      return "must enter an email";
+                    } else if (!emailValid) {
+                      return "enter a valid email";
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
               ),
               SizedBox(
@@ -363,9 +381,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
-                      await registerhttp.loginwithapi(namecontroller.text,
-                          widget.email, passcontroller.text, context, () {
-                        widget.email = HomeScreen.email;
+                      await registerhttp.loginwithapi(
+                          emailcontroller.text, passcontroller.text, context,
+                          () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
                             return HomeScreen();

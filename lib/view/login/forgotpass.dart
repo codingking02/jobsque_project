@@ -37,9 +37,7 @@ class _ForgotPassState extends State<ForgotPass> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return LoginScreen(
-                              email: '',
-                            );
+                            return LoginScreen();
                           },
                         ),
                       );

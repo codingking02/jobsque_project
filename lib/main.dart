@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
-import 'package:jobsque_amit_project/view/login/login.dart';
+import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
+import 'package:jobsque_amit_project/view/home/homescreenwidget.dart';
+
 import 'package:jobsque_amit_project/view/register/register_screen.dart';
+import 'package:jobsque_amit_project/view/splash/splash_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -10,8 +13,16 @@ void main() async {
   final showlogin = prefs.getBool("showlogin") ?? false;
 
   runApp(
-    MyApp(
-      showlogin: showlogin,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => Profilename(),
+          child: HomeScreenWidget(),
+        ),
+      ],
+      child: MyApp(
+        showlogin: showlogin,
+      ),
     ),
   );
 }
@@ -25,9 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: LoginScreen(
-        email: '',
-      ),
+      home: SplashScreen(),
     );
   }
 }
