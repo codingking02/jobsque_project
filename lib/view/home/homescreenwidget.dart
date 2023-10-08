@@ -1,6 +1,7 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/dio/dio_connection.dart';
-import 'package:jobsque_amit_project/model/profile_model.dart';
 import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';

@@ -2,10 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
 import 'package:http/http.dart';
-import 'package:jobsque_amit_project/model/profile_model.dart';
-import 'package:jobsque_amit_project/provider/accountemailprovider.dart';
-import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
-import 'package:provider/provider.dart';
 
 import '../model/user_api_model.dart';
 
