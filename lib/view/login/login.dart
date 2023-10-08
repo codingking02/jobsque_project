@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jobsque_amit_project/controllers/login_controller.dart';
 import 'package:jobsque_amit_project/controllers/register_controller.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/view/register/register_screen.dart';
@@ -15,7 +16,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  HttpConnections registerhttp = HttpConnections();
+  RegisterConnections registerhttp = RegisterConnections();
+  LoginConnection loginConnection = LoginConnection();
   TextEditingController namecontroller = TextEditingController();
 
   TextEditingController passcontroller = TextEditingController();
@@ -381,7 +383,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
-                      await registerhttp.loginwithapi(
+                      await loginConnection.loginwithapi(
                           emailcontroller.text, passcontroller.text, context,
                           () {
                         Navigator.push(context, MaterialPageRoute(

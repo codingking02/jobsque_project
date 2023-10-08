@@ -39,7 +39,7 @@ class _RegisterState extends State<Register> {
   bool isbrightname = false;
   bool isbrightemail = false;
   bool isbrightpass = false;
-  HttpConnections registerhttp = HttpConnections();
+  RegisterConnections registerhttp = RegisterConnections();
 
   Image myeyeimage = Image.asset(
     'assets/eye-slash.png',

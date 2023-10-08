@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
 import 'package:http/http.dart';
 import 'package:jobsque_amit_project/model/profile_model.dart';
+import 'package:jobsque_amit_project/provider/accountemailprovider.dart';
 import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
 import 'package:provider/provider.dart';
 
 import '../model/user_api_model.dart';
 
-class HttpConnections {
+class RegisterConnections {
   static String baseUrl = "https://project2.amit-learning.com/api/";
   static String postEndPoint = "auth/register";
-  static String postEndPointLogin = "auth/login";
 
   final client = varHttp.Client();
 
@@ -132,59 +132,6 @@ class HttpConnections {
         SnackBar(
           content: Text(
             'Email Already been taken',
-          ),
-        ),
-      );
-    }
-  }
-
-  Future<void> loginwithapi(
-    String email,
-    String password,
-    BuildContext context,
-    Function function,
-  ) async {
-    final apiUrl = Uri.parse(
-      baseUrl + postEndPointLogin,
-    );
-
-    // Create a new multipart request
-    final request = varHttp.MultipartRequest('POST', apiUrl);
-
-    // Add form fields to the request
-
-    request.fields['email'] = email;
-    request.fields['password'] = password;
-
-    // Send the request
-    final response = await request.send();
-
-    // Check the response status code
-    if (response.statusCode == 200) {
-      print(
-        'post created',
-      );
-      // Request was successful, handle the response data here
-      final responseData = await response.stream.bytesToString();
-      final jsonResponse = json.decode(responseData);
-      print(' User name :  ${jsonResponse["user"]["name"]}');
-
-      print(
-        'API response: $jsonResponse',
-      );
-      context.read<Profilename>().setname(
-            jsonResponse["user"]["name"],
-          );
-      responseData;
-      print(request.fields);
-      function();
-    } else {
-      // Request failed, handle the error
-      print('API request failed with status code ${response.statusCode}');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "Email or Password is Invalid",
           ),
         ),
       );
