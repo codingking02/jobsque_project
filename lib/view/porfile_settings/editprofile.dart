@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/controllers/profile_controller.dart';
+import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class editprofile extends StatelessWidget {
   editprofile({super.key});
+  ProfileConnection profileConnection = ProfileConnection();
   TextEditingController namecontroller = TextEditingController();
   TextEditingController biocontroller = TextEditingController();
   TextEditingController adresscontroller = TextEditingController();
@@ -188,22 +191,36 @@ class editprofile extends StatelessWidget {
                 height: 48,
                 child: ElevatedButton(
                   style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            1000,
-                          ),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          1000,
                         ),
                       ),
-                      backgroundColor: MaterialStatePropertyAll(
-                        Color.fromRGBO(
-                          51,
-                          102,
-                          255,
-                          1,
-                        ),
-                      )),
-                  onPressed: () async {},
+                    ),
+                    backgroundColor: MaterialStatePropertyAll(
+                      Color.fromRGBO(
+                        51,
+                        102,
+                        255,
+                        1,
+                      ),
+                    ),
+                  ),
+                  onPressed: () async {
+                    await profileConnection.updateName(
+                      namecontroller.text,
+                      context,
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return HomeScreen();
+                        },
+                      ),
+                    );
+                  },
                   child: Text(
                     'Save',
                     textAlign: TextAlign.center,

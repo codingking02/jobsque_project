@@ -1,7 +1,12 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jobsque_amit_project/controllers/profile_controller.dart';
+import 'package:jobsque_amit_project/provider/passwordprovider.dart';
+import 'package:jobsque_amit_project/provider/tokenprovider.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -11,6 +16,7 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  ProfileConnection profileConnection = ProfileConnection();
   bool istextemptypass = false;
   var passcontroller = TextEditingController();
   var ispressedeyeicon = false;
@@ -385,22 +391,43 @@ class _ChangePasswordState extends State<ChangePassword> {
                     height: 48,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                          shape: MaterialStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                1000,
-                              ),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              1000,
                             ),
                           ),
-                          backgroundColor: MaterialStatePropertyAll(
-                            Color.fromRGBO(
-                              51,
-                              102,
-                              255,
-                              1,
+                        ),
+                        backgroundColor: MaterialStatePropertyAll(
+                          Color.fromRGBO(
+                            51,
+                            102,
+                            255,
+                            1,
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (passcontroller0.text ==
+                                context.read<PasswordProvider>().password &&
+                            passcontroller2.text == passcontroller.text) {
+                          print(context.read<TokenProvider>().token);
+                          await profileConnection.updatePassword(
+                            passcontroller.text,
+                            context,
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Wrong Password",
+                              ),
                             ),
-                          )),
-                      onPressed: () async {},
+                          );
+                        }
+
+                        print(context.read<PasswordProvider>().password);
+                      },
                       child: Text(
                         'Save',
                         textAlign: TextAlign.center,

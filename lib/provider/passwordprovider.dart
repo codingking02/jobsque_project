@@ -5,5 +5,6 @@ class PasswordProvider extends ChangeNotifier {
   String get password => _password;
   void setpass(String accountpassword) {
     _password = accountpassword;
+    notifyListeners();
   }
 }

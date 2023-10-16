@@ -105,7 +105,9 @@ class _CreatePassState extends State<CreatePass> {
                         margin: EdgeInsets.only(
                           left: 5,
                         ),
-                        child: Image.asset('assets/lock.png'),
+                        child: Image.asset(
+                          'assets/lock.png',
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(

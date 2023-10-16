@@ -34,9 +34,17 @@ class LoginConnection {
 
     // Check the response status code
     if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Congratualations data is right',
+          ),
+        ),
+      );
       print(
         'post created',
       );
+
       // Request was successful, handle the response data here
       final responseData = await response.stream.bytesToString();
       final jsonResponse = json.decode(responseData);

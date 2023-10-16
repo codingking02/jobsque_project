@@ -5,5 +5,6 @@ class TokenProvider extends ChangeNotifier {
   String get token => _token;
   void settoken(String accounttoken) {
     _token = accounttoken;
+    notifyListeners();
   }
 }

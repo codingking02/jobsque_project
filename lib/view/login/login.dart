@@ -6,6 +6,9 @@ import 'package:jobsque_amit_project/controllers/login_controller.dart';
 import 'package:jobsque_amit_project/controllers/register_controller.dart';
 import 'package:jobsque_amit_project/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/change_password.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/editprofile.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/twostepactivation.dart';
 import 'package:jobsque_amit_project/view/register/register_screen.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -392,7 +395,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return HomeScreen();
+                            return TwoStepActivation();
                           },
                         ));
                       });
@@ -401,14 +404,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
 
                       // Obtain shared preferences.
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Congratualations data is right',
-                          ),
-                        ),
-                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

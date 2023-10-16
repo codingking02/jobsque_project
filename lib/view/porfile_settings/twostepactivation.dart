@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+
+import 'package:jobsque_amit_project/controllers/profile_controller.dart';
+import 'package:jobsque_amit_project/provider/accountemailprovider.dart';
+import 'package:jobsque_amit_project/provider/otpprovider..dart';
+import 'package:jobsque_amit_project/provider/passwordprovider.dart';
+import 'package:jobsque_amit_project/provider/phonenumberprovider.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/twostep_code.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:provider/provider.dart';
 
 class TwoStepActivation extends StatefulWidget {
   TwoStepActivation({super.key});
@@ -10,14 +18,21 @@ class TwoStepActivation extends StatefulWidget {
 }
 
 class _TwoStepActivationState extends State<TwoStepActivation> {
+  // void sending_SMS(String msg, List<String> list_receipents) async {
+  //   String send_result =
+  //       await sendSMS(message: msg, recipients: list_receipents)
+  //           .catchError((err) {
+  //     print(err);
+  //   });
+  //   print(send_result);
+  // }
+
   bool istextemptypass2 = false;
-
   bool ispressedeyeicon2 = false;
-
+  ProfileConnection profileConnection = ProfileConnection();
   var passcontroller2 = TextEditingController();
-
+  var phonenumbercontroller = TextEditingController();
   final FocusNode inputFocusNode = FocusNode();
-
   var maskFormatter = new MaskTextInputFormatter(
       mask: '####-###-####', filter: {"#": RegExp(r'[0-9]')});
 
@@ -50,6 +65,7 @@ class _TwoStepActivationState extends State<TwoStepActivation> {
                   Container(
                     height: 60,
                     child: TextFormField(
+                      controller: phonenumbercontroller,
                       focusNode: inputFocusNode,
                       keyboardType: TextInputType.phone,
                       inputFormatters: [
@@ -197,6 +213,89 @@ class _TwoStepActivationState extends State<TwoStepActivation> {
                           borderSide: BorderSide(
                             color: Colors.red,
                           ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 328,
+                  ),
+                  Container(
+                    width: 1000,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              1000,
+                            ),
+                          ),
+                        ),
+                        backgroundColor: MaterialStatePropertyAll(
+                          Color.fromRGBO(
+                            51,
+                            102,
+                            255,
+                            1,
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        print(
+                          maskFormatter.getUnmaskedText(),
+                        );
+                        if (passcontroller2.text ==
+                            context.read<PasswordProvider>().password) {
+                          // sending_SMS(
+                          //   'Hello This Is Your Otp From Jobsque ',
+                          //   [
+                          //     context
+                          //         .read<PhoneNumberProvider>()
+                          //         .unmaskedphonenumber
+                          //   ],
+                          // );
+                          context.read<PhoneNumberProvider>().setunmaskednumber(
+                                maskFormatter.getUnmaskedText(),
+                              );
+                          context.read<PhoneNumberProvider>().setmaskednumber(
+                                maskFormatter.getMaskedText(),
+                              );
+                          await profileConnection.getotp(
+                            context.read<AccountEmailProvider>().accountemail,
+                            context,
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return TwoStepCode();
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                          print(context.read<OtpProvider>().otp);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Wrong Password",
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Next',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'SF Pro Display',
+                          fontWeight: FontWeight.w500,
+                          height: 1.30,
+                          letterSpacing: 0.16,
                         ),
                       ),
                     ),

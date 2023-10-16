@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -65,7 +67,7 @@ class Profile extends StatelessWidget {
             ),
           ),
           Text(
-            'Rafif Dian Axelingga',
+            context.read<Profilename>().username,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFF111827),

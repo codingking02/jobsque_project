@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/provider/accountemailprovider.dart';
+import 'package:jobsque_amit_project/provider/otpprovider..dart';
 import 'package:jobsque_amit_project/provider/passwordprovider.dart';
+import 'package:jobsque_amit_project/provider/phonenumberprovider.dart';
 import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/provider/resetemailprovider.dart';
 import 'package:jobsque_amit_project/provider/tokenprovider.dart';
@@ -16,6 +18,12 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => PhoneNumberProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => OtpProvider(),
+        ),
         ChangeNotifierProvider(
           create: (context) => TokenProvider(),
         ),
