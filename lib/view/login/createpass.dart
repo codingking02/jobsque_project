@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jobsque_amit_project/controllers/login_controller.dart';
-import 'package:jobsque_amit_project/provider/resetemailprovider.dart';
+import 'package:jobsque_amit_project/connections/login_controller.dart';
+import 'package:jobsque_amit_project/data/provider/resetemailprovider.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 

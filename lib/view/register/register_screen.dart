@@ -1,8 +1,8 @@
 // ignore_for_file: unnecessary_null_comparison, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/controllers/register_controller.dart';
-import 'package:jobsque_amit_project/model/profile_model.dart';
+import 'package:jobsque_amit_project/connections/register_controller.dart';
+import 'package:jobsque_amit_project/data/model/profile_model.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 

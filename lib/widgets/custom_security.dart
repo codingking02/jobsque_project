@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/dio/dio_connection.dart';
+import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CustomSecurity extends StatefulWidget {
@@ -18,8 +19,6 @@ class CustomSecurity extends StatefulWidget {
 }
 
 class _CustomSecurityState extends State<CustomSecurity> {
-  DioConnection dioConnection = DioConnection();
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,38 +48,15 @@ class _CustomSecurityState extends State<CustomSecurity> {
               Row(
                 children: [
                   widget.isbool
-                      ? FutureBuilder(
-                          future: dioConnection.getusersdata(),
-                          builder: (context, snapshot) {
-                            return FutureBuilder(
-                              future: dioConnection.getusersdata(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Container(
-                                    height: 10,
-                                    width: 10,
-                                    child: CircularProgressIndicator(),
-                                  );
-                                } else if (snapshot.hasData) {
-                                  return Text(
-                                    '${snapshot.data![1].email}',
-                                    style: TextStyle(
-                                      color: Color(0xFF6B7280),
-                                      fontSize: 14,
-                                      fontFamily: 'SF Pro Display',
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 0.14,
-                                    ),
-                                  );
-                                } else {
-                                  return Text(
-                                    '',
-                                  );
-                                }
-                              },
-                            );
-                          },
+                      ? Text(
+                          '${context.read<AccountEmailProvider>().accountemail}',
+                          style: TextStyle(
+                            color: Color(0xFF6B7280),
+                            fontSize: 14,
+                            fontFamily: 'SF Pro Display',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 0.14,
+                          ),
                         )
                       : Text(
                           widget.righttext,

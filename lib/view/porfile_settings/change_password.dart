@@ -1,10 +1,9 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:jobsque_amit_project/controllers/profile_controller.dart';
-import 'package:jobsque_amit_project/provider/passwordprovider.dart';
-import 'package:jobsque_amit_project/provider/tokenprovider.dart';
+import 'package:jobsque_amit_project/connections/profile_controller.dart';
+import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
+import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 

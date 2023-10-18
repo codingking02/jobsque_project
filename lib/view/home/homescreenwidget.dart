@@ -1,8 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/dio/dio_connection.dart';
-import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
+import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
@@ -18,8 +17,6 @@ class HomeScreenWidget extends StatefulWidget {
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
-  DioConnection dioConnection = DioConnection();
-
   TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {

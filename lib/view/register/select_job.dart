@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/model/joblist.dart';
+import 'package:jobsque_amit_project/data/model/joblist.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 import '../../widgets/customejob_widget.dart';

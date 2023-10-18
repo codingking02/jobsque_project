@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/provider/accountemailprovider.dart';
-import 'package:jobsque_amit_project/provider/otpprovider..dart';
-import 'package:jobsque_amit_project/provider/phonenumberprovider.dart';
+import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
+import 'package:jobsque_amit_project/data/provider/otpprovider..dart';
+import 'package:jobsque_amit_project/data/provider/phonenumberprovider.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/phone_number.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';

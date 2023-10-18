@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
-import 'package:jobsque_amit_project/provider/accountemailprovider.dart';
-import 'package:jobsque_amit_project/provider/passwordprovider.dart';
-import 'package:jobsque_amit_project/provider/profilenameprovider.dart';
-import 'package:jobsque_amit_project/provider/tokenprovider.dart';
+import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
+import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
+import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
+import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
 import 'package:provider/provider.dart';
 
 class LoginConnection {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
 import 'package:http/http.dart';
 
-import '../model/user_api_model.dart';
+import '../data/model/user_api_model.dart';
 
 class RegisterConnections {
   static String baseUrl = "https://project2.amit-learning.com/api/";

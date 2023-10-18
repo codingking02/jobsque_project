@@ -1,7 +1,7 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/model/searches_model.dart';
+import 'package:jobsque_amit_project/data/model/searches_model.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-
-import 'package:jobsque_amit_project/controllers/profile_controller.dart';
-import 'package:jobsque_amit_project/provider/accountemailprovider.dart';
-import 'package:jobsque_amit_project/provider/otpprovider..dart';
-import 'package:jobsque_amit_project/provider/passwordprovider.dart';
-import 'package:jobsque_amit_project/provider/phonenumberprovider.dart';
+import 'package:flutter_sms/flutter_sms.dart';
+import 'package:jobsque_amit_project/connections/profile_controller.dart';
+import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
+import 'package:jobsque_amit_project/data/provider/otpprovider..dart';
+import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
+import 'package:jobsque_amit_project/data/provider/phonenumberprovider.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/twostep_code.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TwoStepActivation extends StatefulWidget {
   TwoStepActivation({super.key});
@@ -18,14 +19,15 @@ class TwoStepActivation extends StatefulWidget {
 }
 
 class _TwoStepActivationState extends State<TwoStepActivation> {
-  // void sending_SMS(String msg, List<String> list_receipents) async {
-  //   String send_result =
-  //       await sendSMS(message: msg, recipients: list_receipents)
-  //           .catchError((err) {
-  //     print(err);
-  //   });
-  //   print(send_result);
-  // }
+  void sendSMS(String phoneNumber, String message) async {
+    final uri = 'sms:$phoneNumber?body=$message';
+
+    if (await canLaunch(uri)) {
+      await launch(uri);
+    } else {
+      // Handle the error, e.g., show a dialog or a snackbar.
+    }
+  }
 
   bool istextemptypass2 = false;
   bool ispressedeyeicon2 = false;
@@ -247,14 +249,6 @@ class _TwoStepActivationState extends State<TwoStepActivation> {
                         );
                         if (passcontroller2.text ==
                             context.read<PasswordProvider>().password) {
-                          // sending_SMS(
-                          //   'Hello This Is Your Otp From Jobsque ',
-                          //   [
-                          //     context
-                          //         .read<PhoneNumberProvider>()
-                          //         .unmaskedphonenumber
-                          //   ],
-                          // );
                           context.read<PhoneNumberProvider>().setunmaskednumber(
                                 maskFormatter.getUnmaskedText(),
                               );
@@ -275,7 +269,35 @@ class _TwoStepActivationState extends State<TwoStepActivation> {
                               );
                             },
                           );
+                          final String phoneNumber = context
+                              .read<PhoneNumberProvider>()
+                              .unmaskedphonenumber; // Replace with the recipient's phone number
+                          final String message =
+                              'Hello This Is Your Otp From Jobsque App : ${context.read<OtpProvider>().otp}'; // Replace with your message
+
+                          final Uri uri = Uri(
+                              scheme: 'sms',
+                              path: phoneNumber,
+                              queryParameters: {'body': message});
+
+                          try {
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri);
+                            } else {
+                              throw 'Could not launch the SMS app.';
+                            }
+                          } catch (e) {
+                            print('Error: $e');
+                          }
+
                           print(context.read<OtpProvider>().otp);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Your Otp Is :  ${context.read<OtpProvider>().otp}",
+                              ),
+                            ),
+                          );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
