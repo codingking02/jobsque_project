@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
 import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -82,7 +83,7 @@ class Profile extends StatelessWidget {
             height: 20,
           ),
           Text(
-            'Senior UI/UX Designer',
+            context.read<BioProvider>().bio,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFF6B7280),
@@ -174,7 +175,7 @@ class Profile extends StatelessWidget {
                   'assets/portfolio.svg',
                 ),
                 getSvgPicture(
-                  'assets/language.svg',
+                  'assets/Lang.svg',
                 ),
                 getSvgPicture(
                   'assets/notificationprofile.svg',

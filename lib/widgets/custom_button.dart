@@ -3,14 +3,24 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatefulWidget {
   final String text1;
   final String text2;
-  const CustomButton({super.key, required this.text1, required this.text2});
+  final Function function;
+  final Function secfunction;
+  CustomButton({
+    super.key,
+    required this.text1,
+    required this.text2,
+    required this.function,
+    required this.secfunction,
+  });
 
   @override
   State<CustomButton> createState() => _CustomButtonState();
 }
 
 class _CustomButtonState extends State<CustomButton> {
-  bool ispressed = false;
+  bool ispressed = true;
+  bool ispressed2 = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +42,9 @@ class _CustomButtonState extends State<CustomButton> {
             child: InkWell(
               onTap: () {
                 setState(() {
-                  ispressed = !ispressed;
+                  ispressed = true;
+                  ispressed2 = false;
+                  ispressed == true ? widget.function() : null;
                 });
               },
               child: Container(
@@ -42,7 +54,8 @@ class _CustomButtonState extends State<CustomButton> {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: ispressed ? Color(0xFF091A7A) : Color(0xFFF4F4F5),
+                  color:
+                      ispressed == true ? Color(0xFF091A7A) : Color(0xFFF4F4F5),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Row(
@@ -54,8 +67,9 @@ class _CustomButtonState extends State<CustomButton> {
                       widget.text1,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color:
-                            ispressed ? Color(0xFFF4F4F5) : Color(0xFF6B7280),
+                        color: ispressed == true
+                            ? Color(0xFFF4F4F5)
+                            : Color(0xFF6B7280),
                         fontSize: 14,
                         fontFamily: 'SF Pro Display',
                         fontWeight: FontWeight.w500,
@@ -72,7 +86,9 @@ class _CustomButtonState extends State<CustomButton> {
             child: InkWell(
               onTap: () {
                 setState(() {
-                  ispressed = !ispressed;
+                  ispressed2 = true;
+                  ispressed = false;
+                  ispressed2 == true ? widget.secfunction() : null;
                 });
               },
               child: Container(
@@ -80,7 +96,9 @@ class _CustomButtonState extends State<CustomButton> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
-                  color: ispressed ? Color(0xFFF4F4F5) : Color(0xFF091A7A),
+                  color: ispressed2 == false
+                      ? Color(0xFFF4F4F5)
+                      : Color(0xFF091A7A),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Row(
@@ -92,7 +110,9 @@ class _CustomButtonState extends State<CustomButton> {
                       widget.text2,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: ispressed ? Color(0xFF6B7280) : Colors.white,
+                        color: ispressed2 == false
+                            ? Color(0xFF6B7280)
+                            : Colors.white,
                         fontSize: 14,
                         fontFamily: 'SF Pro Display',
                         fontWeight: FontWeight.w500,

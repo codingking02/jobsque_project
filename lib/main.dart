@@ -5,9 +5,13 @@ import 'package:jobsque_amit_project/data/provider/otpprovider..dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/data/provider/phonenumberprovider.dart';
 import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
+import 'package:jobsque_amit_project/data/provider/registertokenprovider.dart';
 import 'package:jobsque_amit_project/data/provider/resetemailprovider.dart';
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/language.dart';
+import 'package:jobsque_amit_project/view/register/register_screen.dart';
+import 'package:jobsque_amit_project/view/register/select_country.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,6 +23,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => RegisterTokenProvider(),
+        ),
         ChangeNotifierProvider(
           create: (context) => BioProvider(),
         ),

@@ -5,6 +5,8 @@ class JobCard extends StatefulWidget {
   final String jobkind;
   final String coloredjobicon;
   final double height;
+  final Function function;
+  final Function secfunction;
 
   const JobCard({
     super.key,
@@ -12,6 +14,8 @@ class JobCard extends StatefulWidget {
     required this.height,
     required this.jobicon,
     required this.jobkind,
+    required this.function,
+    required this.secfunction,
   });
 
   @override
@@ -27,6 +31,11 @@ class _JobCardState extends State<JobCard> {
       onTap: () {
         setState(() {
           ispressed = !ispressed;
+          ispressed
+              ? widget.function()
+              : !ispressed
+                  ? widget.secfunction()
+                  : null;
         });
       },
       child: Container(

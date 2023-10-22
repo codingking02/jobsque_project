@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/connections/register_controller.dart';
 import 'package:jobsque_amit_project/data/model/profile_model.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
+import 'package:jobsque_amit_project/view/register/select_job.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 import '../slider/slider_screens.dart';
@@ -443,7 +444,7 @@ class _RegisterState extends State<Register> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return LoginScreen();
+                                  return SelectJob();
                                 },
                               ),
                             );

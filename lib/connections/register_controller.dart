@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
 import 'package:http/http.dart';
+import 'package:jobsque_amit_project/data/provider/registertokenprovider.dart';
+import 'package:provider/provider.dart';
 
 import '../data/model/user_api_model.dart';
 
@@ -119,6 +121,11 @@ class RegisterConnections {
 
       // Request was successful, handle the response data here
       final responseData = await response.stream.bytesToString();
+      final jsonresponse = json.decode(responseData);
+      print(jsonresponse["token"]);
+      context.read<RegisterTokenProvider>().setregistertoken(
+            jsonresponse["token"],
+          );
       print('API response: $responseData');
       function();
     } else {

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
+import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
 import 'package:jobsque_amit_project/data/provider/otpprovider..dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
+import 'package:jobsque_amit_project/data/provider/registertokenprovider.dart';
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +82,7 @@ class ProfileConnection {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              "Name Updated Successfully",
+              "Data Updated Successfully",
             ),
           ),
         );
@@ -177,10 +179,166 @@ class ProfileConnection {
       );
 
       if (response.statusCode == 200) {
+        context.read<BioProvider>().setbio(bio);
+        context.read<BioProvider>().setmobile(mobile);
+        context.read<BioProvider>().setaddress(address);
         print('Bio updated successfully');
         print('Response: ${response.body}');
       } else {
         print('Failed to update Bio. Status code: ${response.statusCode}');
+        print('Response: ${response.body}');
+      }
+    } catch (e) {
+      print('Error updating Bio: $e');
+    }
+  }
+
+  Future<void> updateinterstedjob(
+    List<String> interested_work,
+    BuildContext context,
+  ) async {
+    // Replace with your API endpoint
+    final Map<String, String> headers = {
+      'Authorization':
+          'Bearer ${context.read<RegisterTokenProvider>().registertoken}',
+      'Content-Type': 'application/json',
+      // Add any necessary headers here
+    };
+
+    final Map<String, List<String>> data = {
+      "interested_work": interested_work,
+    };
+    final String jsonData = json.encode(data);
+
+    try {
+      final response = await client.put(
+        Uri.parse(
+          baseUrl + editbioendpoint,
+        ),
+        headers: headers,
+        body: jsonData,
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+          content: Text('Interseted work saved Successfully'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 100,
+            right: 20,
+            left: 20,
+          ),
+        ));
+        print('interested_work updated successfully');
+        print('Response: ${response.body}');
+      } else {
+        print(
+            'Failed to update Intersted work. Status code: ${response.statusCode}');
+        print('Response: ${response.body}');
+      }
+    } catch (e) {
+      print('Error updating Bio: $e');
+    }
+  }
+
+  Future<void> updateplaceofwork(
+    String offlineplace,
+    String remoteplace,
+    BuildContext context,
+  ) async {
+    // Replace with your API endpoint
+    final Map<String, String> headers = {
+      'Authorization':
+          'Bearer ${context.read<RegisterTokenProvider>().registertoken}',
+      'Content-Type': 'application/json',
+      // Add any necessary headers here
+    };
+
+    final Map<String, String> data = {
+      "offline_place": offlineplace,
+      "remote_place": remoteplace,
+    };
+    final String jsonData = json.encode(data);
+
+    try {
+      final response = await client.put(
+        Uri.parse(
+          baseUrl + editbioendpoint,
+        ),
+        headers: headers,
+        body: jsonData,
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+          content: Text('Place Of Work saved Successfully'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 100,
+            right: 20,
+            left: 20,
+          ),
+        ));
+        print('Place Of Work updated successfully');
+        print('Response: ${response.body}');
+      } else {
+        print(
+            'Failed to update Place Of Work. Status code: ${response.statusCode}');
+        print('Response: ${response.body}');
+      }
+    } catch (e) {
+      print('Error updating Bio: $e');
+    }
+  }
+
+  Future<void> updatelanguage(
+    String language,
+    BuildContext context,
+  ) async {
+    // Replace with your API endpoint
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
+      'Content-Type': 'application/json',
+      // Add any necessary headers here
+    };
+
+    final Map<String, String> data = {
+      "language": language,
+    };
+    final String jsonData = json.encode(data);
+
+    try {
+      final response = await client.put(
+        Uri.parse(
+          baseUrl + editbioendpoint,
+        ),
+        headers: headers,
+        body: jsonData,
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+          content: Text('Language saved Successfully'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 100,
+            right: 20,
+            left: 20,
+          ),
+        ));
+        print('Language updated successfully');
+        print('Response: ${response.body}');
+      } else {
+        print('Failed to update Language. Status code: ${response.statusCode}');
         print('Response: ${response.body}');
       }
     } catch (e) {

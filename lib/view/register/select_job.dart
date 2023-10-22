@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/connections/profile_controller.dart';
 import 'package:jobsque_amit_project/data/model/joblist.dart';
+import 'package:jobsque_amit_project/view/register/select_country.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 import '../../widgets/customejob_widget.dart';
@@ -12,6 +14,8 @@ class SelectJob extends StatefulWidget {
 }
 
 class _SelectJobState extends State<SelectJob> {
+  ProfileConnection profileConnection = ProfileConnection();
+  List<String> interesetedjobs = [];
   List<joblist> myjoblist = [
     joblist(
       jobicon: 'assets/linear.png',
@@ -90,6 +94,33 @@ class _SelectJobState extends State<SelectJob> {
                         jobkind: myjoblist[index].jobtext,
                         coloredjobicon: myjoblist[index].coloredjobicon,
                         height: myjoblist[index].height,
+                        function: () {
+                          switch (myjoblist[index].jobtext) {
+                            case "UI/UX Design":
+                              interesetedjobs.add("UI/UX Design");
+                              break;
+                            case "Ilustrator Designer":
+                              interesetedjobs.add("Ilustrator Designer");
+                              break;
+                            case "Developer":
+                              interesetedjobs.add("Developer");
+                              break;
+                            case "Management":
+                              interesetedjobs.add("Management");
+                              break;
+                            case "Information Technologi":
+                              interesetedjobs.add("Information Technologi");
+                              break;
+                            case "Research and Analytics":
+                              interesetedjobs.add("Research and Analytics");
+                              break;
+                            default:
+                              print("default");
+                          }
+                        },
+                        secfunction: () {
+                          interesetedjobs.remove(myjoblist[index].jobtext);
+                        },
                       );
                     },
                   ),
@@ -121,7 +152,18 @@ class _SelectJobState extends State<SelectJob> {
                     ),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  await profileConnection.updateinterstedjob(
+                      interesetedjobs, context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SelectCountry(),
+                    ),
+                  );
+                  print(interesetedjobs);
+                  print(myjoblist.length);
+                },
                 child: Text(
                   'Next',
                   textAlign: TextAlign.center,

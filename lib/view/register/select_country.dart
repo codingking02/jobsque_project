@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/connections/profile_controller.dart';
+import 'package:jobsque_amit_project/view/login/login.dart';
 import 'package:jobsque_amit_project/widgets/custom_button.dart';
 
 import 'package:jobsque_amit_project/widgets/widgets.dart';
@@ -13,6 +15,8 @@ class SelectCountry extends StatefulWidget {
 }
 
 class _SelectCountryState extends State<SelectCountry> {
+  ProfileConnection profileConnection = ProfileConnection();
+  String placeofwork = "Work From Office";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +38,12 @@ class _SelectCountryState extends State<SelectCountry> {
             CustomButton(
               text1: 'Work From Office',
               text2: 'Remote Work',
+              function: () {
+                placeofwork = "Work From Office";
+              },
+              secfunction: () {
+                placeofwork = "Remote Work";
+              },
             ),
             SizedBox(
               height: 27,
@@ -213,7 +223,19 @@ class _SelectCountryState extends State<SelectCountry> {
                     ),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  await profileConnection.updateplaceofwork(
+                    placeofwork == "Work From Office" ? "true" : "false",
+                    placeofwork == "Work From Office" ? "false" : "true",
+                    context,
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
+                    ),
+                  );
+                },
                 child: Text(
                   'Next',
                   textAlign: TextAlign.center,

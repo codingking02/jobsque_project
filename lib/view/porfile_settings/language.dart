@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/connections/profile_controller.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
+// ignore: must_be_immutable
 class Language extends StatelessWidget {
-  const Language({super.key});
-
+  Language({super.key});
+  ProfileConnection profileConnection = ProfileConnection();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +32,13 @@ class Language extends StatelessWidget {
                     SizedBox(
                       height: 25,
                     ),
-                    getSvgPicture(
-                      'assets/Language.svg',
+                    InkWell(
+                      onTap: () async {
+                        await profileConnection.updatelanguage("en", context);
+                      },
+                      child: getSvgPicture(
+                        'assets/Lang0.svg',
+                      ),
                     ),
                     getSvgPicture(
                       'assets/Language1.svg',
@@ -58,7 +65,7 @@ class Language extends StatelessWidget {
                       'assets/Language8.svg',
                     ),
                     getSvgPicture(
-                      'assets/Language9.svg',
+                      'assets/Lang9.svg',
                     ),
                   ],
                 ),
