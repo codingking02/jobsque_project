@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'package:jobsque_amit_project/connections/profile_controller.dart';
 import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
 import 'package:jobsque_amit_project/data/provider/otpprovider..dart';

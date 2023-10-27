@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
+import 'package:http/http.dart';
+import 'package:jobsque_amit_project/data/model/portfolio.dart';
 import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
 import 'package:jobsque_amit_project/data/provider/otpprovider..dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
@@ -14,6 +17,7 @@ class ProfileConnection {
   static String updatepasswordendpoint = "auth/user/update";
   static String getotpendpoint = "auth/otp";
   static String editbioendpoint = "user/profile/edit";
+  static String addportfolioendpoint = "user/profile/portofolios";
   final client = varHttp.Client();
 
   Future<void> updatePassword(String password, BuildContext context) async {
@@ -344,5 +348,93 @@ class ProfileConnection {
     } catch (e) {
       print('Error updating Bio: $e');
     }
+  }
+
+  Future<void> uploadFilesToPostmanApi(
+    File pdfFile,
+    File image,
+    BuildContext context,
+  ) async {
+    var request = varHttp.MultipartRequest(
+      'POST',
+      Uri.parse(
+        baseUrl + addportfolioendpoint,
+      ),
+    );
+
+    // Add the PDF file to the request
+    request.files.add(await varHttp.MultipartFile.fromPath(
+      'cv_file', // This is the field name for the PDF file in the API request
+      pdfFile.path,
+    ));
+
+    // Add the image file to the request
+    request.files.add(await varHttp.MultipartFile.fromPath(
+      'image', // This is the field name for the PDF file in the API request
+      image.path,
+    ));
+    // You can also add other fields as needed, e.g., headers, tokens, etc.
+    request.headers['Authorization'] =
+        'Bearer ${context.read<TokenProvider>().token}';
+
+    try {
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.bytesToString();
+        final jsonResponse = json.decode(responseData);
+
+        print(
+          'API response: $jsonResponse',
+        );
+        // Request successful, handle the response here if needed
+        print('Files uploaded successfully');
+      } else {
+        final responseData = await response.stream.bytesToString();
+        final jsonResponse = json.decode(responseData);
+        print(
+          'API response: $jsonResponse',
+        );
+        // Request failed, handle the error here
+        print('Failed to upload files. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Exception occurred, handle the error here
+      print('Error while uploading files: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> fetchDataFromPostmanAPI(
+      BuildContext context) async {
+    // Replace with your API URL
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
+      'Content-Type': 'application/json',
+      // Add any necessary headers here
+    };
+    try {
+      final response = await client.get(
+        Uri.parse(
+          baseUrl + addportfolioendpoint,
+        ),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+        if (jsonResponse.containsKey('data') &&
+            jsonResponse['data']['portfolio'] is List) {
+          List<dynamic> portfolioList = jsonResponse['data']['portfolio'];
+          List<Map<String, dynamic>> portfolioData =
+              List<Map<String, dynamic>>.from(portfolioList);
+          return portfolioData;
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    return null; // Return null in case of an error or if the JSON structure doesn't match
   }
 }

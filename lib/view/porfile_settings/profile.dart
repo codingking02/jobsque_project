@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
 import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/portfolio2.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -171,8 +172,20 @@ class Profile extends StatelessWidget {
                 getSvgPicture(
                   'assets/editprofile.svg',
                 ),
-                getSvgPicture(
-                  'assets/portfolio.svg',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return Portfolio2();
+                        },
+                      ),
+                    );
+                  },
+                  child: getSvgPicture(
+                    'assets/portfolio.svg',
+                  ),
                 ),
                 getSvgPicture(
                   'assets/Lang.svg',

@@ -6,6 +6,7 @@ import 'package:jobsque_amit_project/connections/login_controller.dart';
 import 'package:jobsque_amit_project/connections/register_controller.dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/portfolio.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/profile.dart';
 import 'package:jobsque_amit_project/view/register/register_screen.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -392,7 +393,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return Portfolio();
+                            return Profile();
                           },
                         ));
                       });
@@ -481,7 +482,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 margin: EdgeInsets.symmetric(
                   vertical: 24,
-                  horizontal: 30,
+                  horizontal: 25,
                 ),
                 child: Center(
                   child: Row(

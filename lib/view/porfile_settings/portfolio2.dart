@@ -1,47 +1,28 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jobsque_amit_project/connections/profile_controller.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
-class Portfolio extends StatefulWidget {
-  const Portfolio({super.key});
+class Portfolio2 extends StatefulWidget {
+  const Portfolio2({super.key});
 
   @override
-  State<Portfolio> createState() => _PortfolioState();
+  State<Portfolio2> createState() => _Portfolio2State();
 }
 
-class _PortfolioState extends State<Portfolio> {
-  List<Map<String, dynamic>>? portfolioData;
+class _Portfolio2State extends State<Portfolio2> {
   List<PlatformFile> pdflist = [];
   ProfileConnection profileConnection = ProfileConnection();
   @override
-  void initState() {
-    super.initState();
-    profileConnection.fetchDataFromPostmanAPI(context).then((data) {
-      setState(() {
-        portfolioData = data;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          profileConnection.fetchDataFromPostmanAPI(context).then((data) {
-            setState(() {
-              portfolioData = data;
-            });
-          });
-        },
-        child: Icon(
-          Icons.refresh,
-        ),
-      ),
       body: Column(
         children: [
           gettopbarimage(),
@@ -51,7 +32,7 @@ class _PortfolioState extends State<Portfolio> {
             ),
             child: Column(
               children: [
-                getheader(text: 'Portfolio', width: 110),
+                getheader(text: 'Portfolio2', width: 110),
                 SizedBox(
                   height: 36,
                 ),
@@ -60,16 +41,9 @@ class _PortfolioState extends State<Portfolio> {
                     pickAndUploadFiles(
                       context,
                     );
-                    profileConnection
-                        .fetchDataFromPostmanAPI(context)
-                        .then((data) {
-                      setState(() {
-                        portfolioData = data;
-                      });
-                    });
                   },
                   child: getSvgPicture(
-                    'assets/addportfolio.svg',
+                    'assets/addPortfolio2.svg',
                   ),
                 ),
                 SizedBox(
@@ -78,19 +52,20 @@ class _PortfolioState extends State<Portfolio> {
               ],
             ),
           ),
-          portfolioData == null
-              ? Center(child: CircularProgressIndicator())
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: portfolioData!.length,
-                    itemBuilder: (context, index) {
-                      final item = portfolioData![index];
-                      return ListTile(
-                        title: Text(item['cv_file']),
-                      );
-                    },
-                  ),
-                ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: pdflist.length,
+              itemBuilder: (context, index) {
+                final pdfFile = pdflist[index];
+                return ListTile(
+                  title: Text(pdfFile.name),
+                  onTap: () {
+                    openPDF(pdfFile);
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -128,6 +103,18 @@ class _PortfolioState extends State<Portfolio> {
       pdflist.add(
         pdfFile.files.first,
       );
+    }
+  }
+
+  Future<void> openPDF(PlatformFile pdfFile) async {
+    if (pdfFile != null) {
+      final filePath = pdfFile.path;
+      final result = await OpenFile.open(filePath);
+      if (result.type == ResultType.done) {
+        print("File opened with success");
+      } else {
+        print("Could not open the file");
+      }
     }
   }
 }
