@@ -8,14 +8,16 @@ import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/data/provider/registertokenprovider.dart';
 import 'package:jobsque_amit_project/data/provider/resetemailprovider.dart';
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
+import 'package:jobsque_amit_project/view/home/jobs_screen.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
+import 'package:jobsque_amit_project/view/saved_notification.dart/favorites.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
-  final showlogin = prefs.getBool("showlogin") ?? false;
+  final rememberme = prefs.getBool("rememberme");
 
   runApp(
     MultiProvider(
@@ -48,23 +50,21 @@ void main() async {
           create: (context) => Profilename(),
         ),
       ],
-      child: MyApp(
-        showlogin: showlogin,
-      ),
+      child: MyApp(rememberme: rememberme),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  final bool showlogin;
-  MyApp({super.key, required this.showlogin});
+  final bool? rememberme;
+  MyApp({super.key, required this.rememberme});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: LoginScreen(),
+      home: rememberme == true ? JobsScreen() : LoginScreen(),
     );
   }
 }

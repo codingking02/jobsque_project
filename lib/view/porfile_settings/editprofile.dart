@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobsque_amit_project/connections/profile_controller.dart';
-import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/profile.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';

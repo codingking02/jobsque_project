@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as varHttp;
-import 'package:http/http.dart';
-import 'package:jobsque_amit_project/data/model/portfolio.dart';
 import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
 import 'package:jobsque_amit_project/data/provider/otpprovider..dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
@@ -11,6 +9,7 @@ import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/data/provider/registertokenprovider.dart';
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileConnection {
   static String baseUrl = "https://project2.amit-learning.com/api/";
@@ -25,9 +24,15 @@ class ProfileConnection {
       'password': password,
     };
 
-    final headers = {
+    final prefs = await SharedPreferences.getInstance();
+
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
       'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json', // You can add other headers if needed
     };
 
     try {
@@ -35,7 +40,7 @@ class ProfileConnection {
         Uri.parse(
           baseUrl + updatepasswordendpoint,
         ),
-        headers: headers,
+        headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
         body: jsonEncode(data),
       );
 
@@ -67,9 +72,15 @@ class ProfileConnection {
       'name': name,
     };
 
-    final headers = {
+    final prefs = await SharedPreferences.getInstance();
+
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
       'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json', // You can add other headers if needed
     };
 
     try {
@@ -77,7 +88,7 @@ class ProfileConnection {
         Uri.parse(
           baseUrl + updatepasswordendpoint,
         ),
-        headers: headers,
+        headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
         body: jsonEncode(data),
       );
 
@@ -109,10 +120,14 @@ class ProfileConnection {
     final Map<String, String> data = {
       'email': email,
     };
-
-    final headers = {
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
       'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json', // You can add other headers if needed
     };
 
     try {
@@ -120,7 +135,7 @@ class ProfileConnection {
         Uri.parse(
           baseUrl + getotpendpoint,
         ),
-        headers: headers,
+        headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
         body: jsonEncode(data),
       );
 
@@ -159,10 +174,14 @@ class ProfileConnection {
     BuildContext context,
   ) async {
     // Replace with your API endpoint
-    final Map<String, String> headers = {
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
       'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
-      'Content-Type': 'application/json',
-      // Add any necessary headers here
+      'Content-Type': 'application/json', // You can add other headers if needed
     };
 
     final Map<String, String> data = {
@@ -178,11 +197,14 @@ class ProfileConnection {
         Uri.parse(
           baseUrl + editbioendpoint,
         ),
-        headers: headers,
+        headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
         body: jsonData,
       );
 
       if (response.statusCode == 200) {
+        prefs.getBool("rememberme") == true
+            ? prefs.setString("bio", bio)
+            : null;
         context.read<BioProvider>().setbio(bio);
         context.read<BioProvider>().setmobile(mobile);
         context.read<BioProvider>().setaddress(address);
@@ -305,11 +327,14 @@ class ProfileConnection {
     String language,
     BuildContext context,
   ) async {
-    // Replace with your API endpoint
-    final Map<String, String> headers = {
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
       'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
-      'Content-Type': 'application/json',
-      // Add any necessary headers here
+      'Content-Type': 'application/json', // You can add other headers if needed
     };
 
     final Map<String, String> data = {
@@ -322,7 +347,7 @@ class ProfileConnection {
         Uri.parse(
           baseUrl + editbioendpoint,
         ),
-        headers: headers,
+        headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
         body: jsonData,
       );
 
@@ -374,8 +399,10 @@ class ProfileConnection {
       image.path,
     ));
     // You can also add other fields as needed, e.g., headers, tokens, etc.
-    request.headers['Authorization'] =
-        'Bearer ${context.read<TokenProvider>().token}';
+    final prefs = await SharedPreferences.getInstance();
+    request.headers['Authorization'] = prefs.getBool("rememberme") == true
+        ? 'Bearer ${prefs.getString("token")}'
+        : 'Bearer ${context.read<TokenProvider>().token}';
 
     try {
       final response = await request.send();
@@ -407,17 +434,21 @@ class ProfileConnection {
   Future<List<Map<String, dynamic>>?> fetchDataFromPostmanAPI(
       BuildContext context) async {
     // Replace with your API URL
-    final Map<String, String> headers = {
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
       'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
-      'Content-Type': 'application/json',
-      // Add any necessary headers here
+      'Content-Type': 'application/json', // You can add other headers if needed
     };
     try {
       final response = await client.get(
         Uri.parse(
           baseUrl + addportfolioendpoint,
         ),
-        headers: headers,
+        headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
       );
 
       if (response.statusCode == 200) {
@@ -435,6 +466,40 @@ class ProfileConnection {
       print('Error: $e');
     }
 
-    return null; // Return null in case of an error or if the JSON structure doesn't match
+    return null;
+  }
+
+  Future<void> deleteportfoilio(
+    int id,
+    BuildContext context,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
+      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    try {
+      final response = await client.delete(
+        Uri.parse(
+          baseUrl + addportfolioendpoint + "/$id",
+        ),
+        headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
+      );
+
+      if (response.statusCode == 200) {
+        print('Resource with ID $id deleted successfully');
+        print('Response body: ${response.body}');
+      } else {
+        print(
+            'Failed to delete resource with ID $id. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      print('Error while deleting resource: $e');
+    }
   }
 }

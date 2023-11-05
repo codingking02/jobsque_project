@@ -2,9 +2,14 @@
 
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/widgets/custom_job_selection.dart';
+import 'package:jobsque_amit_project/connections/favorites_connection.dart';
+import 'package:jobsque_amit_project/connections/job_connection.dart';
 import 'package:jobsque_amit_project/widgets/custom_jobtype.dart';
+import 'package:jobsque_amit_project/widgets/customalljobwidget.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
+import 'dart:core';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JobsScreen extends StatefulWidget {
   JobsScreen({super.key});
@@ -14,6 +19,26 @@ class JobsScreen extends StatefulWidget {
 }
 
 class _JobsScreenState extends State<JobsScreen> {
+  List<Map<String, dynamic>>? jobdata;
+  JobConnection jobConnection = JobConnection();
+  FavoritesConnection favoritesConnection = FavoritesConnection();
+  List<Map<String, dynamic>> data = [];
+  @override
+  void initState() {
+    super.initState();
+    jobConnection.getAllJobs(context).then((data) {
+      setState(() {
+        jobdata = data;
+      });
+    });
+    favoritesConnection.getAllSaved(context).then((jsonData) {
+      setState(() {
+        data = jsonData!;
+      });
+    });
+  }
+
+  bool issaved = false;
   bool istapped = false;
 
   SizedBox box8 = SizedBox(
@@ -65,6 +90,7 @@ class _JobsScreenState extends State<JobsScreen> {
                 children: [
                   InkWell(
                     onTap: () {
+                      print(jobdata);
                       showModalBottomSheet(
                         isScrollControlled: true,
                         shape: RoundedRectangleBorder(
@@ -77,7 +103,7 @@ class _JobsScreenState extends State<JobsScreen> {
                           return StatefulBuilder(
                             builder: (context, setState) {
                               return SizedBox(
-                                height: 770,
+                                height: 650,
                                 child: Padding(
                                   padding: EdgeInsets.fromLTRB(
                                     24,
@@ -324,7 +350,7 @@ class _JobsScreenState extends State<JobsScreen> {
                                         ],
                                       ),
                                       SizedBox(
-                                        height: 158,
+                                        height: 40,
                                       ),
                                       Container(
                                         width: 360,
@@ -411,69 +437,37 @@ class _JobsScreenState extends State<JobsScreen> {
             height: 25,
           ),
           Expanded(
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                CustomJobSelection(
-                  icon: 'assets/bluearchive.png',
-                  titletext: 'assets/ttitle.svg',
-                  wage: '\$10K',
-                  jobbuttontext1: 'Fulltime',
-                  jobbuttontext2: 'Remote',
-                  width1: 80,
-                  width2: 75,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomJobSelection(
-                  icon: 'assets/blackarchive.png',
-                  titletext: 'assets/spectrumtitle.svg',
-                  wage: '\$10K',
-                  jobbuttontext1: 'Fulltime',
-                  jobbuttontext2: 'Remote',
-                  width1: 80,
-                  width2: 75,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomJobSelection(
-                  icon: 'assets/blackarchive.png',
-                  titletext: 'assets/vktitle.svg',
-                  wage: '\$12K',
-                  jobbuttontext1: 'Fulltime',
-                  jobbuttontext2: 'Remote',
-                  width1: 80,
-                  width2: 75,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomJobSelection(
-                  icon: 'assets/blackarchive.png',
-                  titletext: 'assets/invisiontitle.svg',
-                  wage: '\$9K',
-                  jobbuttontext1: 'Part Time',
-                  jobbuttontext2: 'Remote',
-                  width1: 86,
-                  width2: 75,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomJobSelection(
-                  icon: 'assets/blackarchive.png',
-                  titletext: 'assets/behancetitle.svg',
-                  wage: '\$12K',
-                  jobbuttontext1: 'Part Time',
-                  jobbuttontext2: 'Remote',
-                  width1: 86,
-                  width2: 75,
-                ),
-              ],
-            ),
-          ),
+              child: Center(
+            child: jobdata != null
+                ? Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ),
+                    child: ListView.builder(
+                      itemCount: jobdata!.length,
+                      itemBuilder: (context, index) {
+                        final jobItem = jobdata![index];
+                        String joblocation = jobItem['location'];
+                        final jobloc = joblocation.substring(0, 14);
+                        return CustomAllJobs(
+                          networkimage: jobItem['image'],
+                          jobname: jobItem['name'],
+                          jobplace: jobloc,
+                          jobdis: jobItem['job_time_type'],
+                          jobtype: jobItem['job_type'],
+                          jobsalary: jobItem['salary'],
+                          function: () async {
+                            await favoritesConnection.postDataWithId(
+                              jobItem['id'],
+                              context,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  )
+                : CircularProgressIndicator(),
+          )),
         ],
       ),
     );

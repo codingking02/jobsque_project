@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jobsque_amit_project/connections/profile_controller.dart';
@@ -43,7 +44,7 @@ class _Portfolio2State extends State<Portfolio2> {
                     );
                   },
                   child: getSvgPicture(
-                    'assets/addPortfolio2.svg',
+                    'assets/addportfolio2.svg',
                   ),
                 ),
                 SizedBox(
@@ -57,11 +58,105 @@ class _Portfolio2State extends State<Portfolio2> {
               itemCount: pdflist.length,
               itemBuilder: (context, index) {
                 final pdfFile = pdflist[index];
-                return ListTile(
-                  title: Text(pdfFile.name),
+                return InkWell(
                   onTap: () {
                     openPDF(pdfFile);
                   },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 16,
+                    ),
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Color(
+                            0XFFD1D5DB,
+                          ),
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          8,
+                        ),
+                      ),
+                    ),
+                    height: 81,
+                    width: 327,
+                    padding: EdgeInsets.all(
+                      16,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        getSvgPicture(
+                          "assets/pdflogo.svg",
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Container(
+                          height: 51,
+                          width: 96,
+                          child: Column(
+                            children: [
+                              AutoSizeText(
+                                pdfFile.name,
+                                maxLines: 2,
+                                style: TextStyle(
+                                  color: Color(0xFF111827),
+                                  fontSize: 14,
+                                  fontFamily: 'SF Pro Display',
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.14,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                'CV.pdf 300KB',
+                                style: TextStyle(
+                                  color: Color(0xFF6B7280),
+                                  fontSize: 12,
+                                  fontFamily: 'SF Pro Display',
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 0.12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 100,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 10,
+                          ),
+                          child: Row(
+                            children: [
+                              getSvgPicture(
+                                "assets/edit.svg",
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    pdflist.removeAt(index);
+                                  });
+                                },
+                                child: getSvgPicture(
+                                  "assets/circlex.svg",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
@@ -100,9 +195,11 @@ class _Portfolio2State extends State<Portfolio2> {
         imageFile,
         context,
       );
-      pdflist.add(
-        pdfFile.files.first,
-      );
+      setState(() {
+        pdflist.add(
+          pdfFile.files.first,
+        );
+      });
     }
   }
 

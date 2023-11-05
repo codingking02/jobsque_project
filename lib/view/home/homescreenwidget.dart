@@ -1,11 +1,10 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
+import 'package:jobsque_amit_project/connections/login_controller.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreenWidget extends StatefulWidget {
   HomeScreenWidget({
@@ -17,6 +16,7 @@ class HomeScreenWidget extends StatefulWidget {
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
+  LoginConnection loginConnection = LoginConnection();
   TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -41,16 +41,29 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Hi, ${context.watch<Profilename>().username}👋',
-                        style: TextStyle(
-                          color: Color(0xFF111827),
-                          fontSize: 24,
-                          fontFamily: 'SF Pro Display',
-                          fontWeight: FontWeight.w500,
-                          height: 1.40,
-                          letterSpacing: 0.24,
-                        ),
+                      FutureBuilder(
+                        future: loginConnection.getprofile(context),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            print(snapshot.data);
+
+                            return Text(
+                              'Hi, ${snapshot.data!['name']}👋',
+                              style: TextStyle(
+                                color: Color(0xFF111827),
+                                fontSize: 24,
+                                fontFamily: 'SF Pro Display',
+                                fontWeight: FontWeight.w500,
+                                height: 0.06,
+                                letterSpacing: 0.24,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          // By default, show a loading indicator
+                          return CircularProgressIndicator();
+                        },
                       ),
                       SizedBox(
                         height: 8,

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobsque_amit_project/view/register/register_screen.dart';
@@ -325,34 +326,6 @@ Widget gettitleforjob() {
         fontWeight: FontWeight.w500,
         height: 1.40,
         letterSpacing: 0.14,
-      ),
-    ),
-  );
-}
-
-Widget jobdisbutton({
-  required String text,
-  required double width,
-}) {
-  return Container(
-    width: width,
-    height: 26,
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-    decoration: ShapeDecoration(
-      color: Color(0xFFD6E4FF),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
-    ),
-    child: Text(
-      text,
-      style: TextStyle(
-        color: Color(0xFF3366FF),
-        fontSize: 12,
-        fontFamily: 'SF Pro Display',
-        fontWeight: FontWeight.w400,
-        height: 1.50,
-        letterSpacing: 0.12,
       ),
     ),
   );

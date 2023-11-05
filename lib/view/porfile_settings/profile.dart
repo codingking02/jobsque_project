@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/connections/login_controller.dart';
 import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
-import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
-import 'package:jobsque_amit_project/view/porfile_settings/portfolio2.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/portfolio.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  LoginConnection loginConnection = LoginConnection();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,32 +75,33 @@ class Profile extends StatelessWidget {
               ],
             ),
           ),
-          Text(
-            context.read<Profilename>().username,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFF111827),
-              fontSize: 20,
-              fontFamily: 'SF Pro Display',
-              fontWeight: FontWeight.w500,
-              height: 0.06,
-              letterSpacing: 0.20,
-            ),
+          FutureBuilder(
+            future: loginConnection.getprofile(context),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                print(snapshot.data);
+
+                return Text(
+                  snapshot.data!['name'],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF111827),
+                    fontSize: 20,
+                    fontFamily: 'SF Pro Display',
+                    fontWeight: FontWeight.w500,
+                    height: 0.06,
+                    letterSpacing: 0.20,
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              // By default, show a loading indicator
+              return CircularProgressIndicator();
+            },
           ),
           SizedBox(
             height: 20,
-          ),
-          Text(
-            context.read<BioProvider>().bio,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFF6B7280),
-              fontSize: 14,
-              fontFamily: 'SF Pro Display',
-              fontWeight: FontWeight.w400,
-              height: 0.10,
-              letterSpacing: 0.14,
-            ),
           ),
           SizedBox(
             height: 24,
@@ -178,7 +186,7 @@ class Profile extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return Portfolio2();
+                          return Portfolio();
                         },
                       ),
                     );
@@ -225,6 +233,22 @@ class Profile extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<Widget> getbio(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    return Text(
+      '${prefs.getBool('rememberme') == true ? prefs.getBool('bio') : context.read<BioProvider>().bio}',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Color(0xFF6B7280),
+        fontSize: 14,
+        fontFamily: 'SF Pro Display',
+        fontWeight: FontWeight.w400,
+        height: 0.10,
+        letterSpacing: 0.14,
       ),
     );
   }

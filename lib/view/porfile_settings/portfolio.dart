@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jobsque_amit_project/connections/profile_controller.dart';
@@ -15,7 +16,7 @@ class Portfolio extends StatefulWidget {
 
 class _PortfolioState extends State<Portfolio> {
   List<Map<String, dynamic>>? portfolioData;
-  List<PlatformFile> pdflist = [];
+
   ProfileConnection profileConnection = ProfileConnection();
   @override
   void initState() {
@@ -30,18 +31,6 @@ class _PortfolioState extends State<Portfolio> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          profileConnection.fetchDataFromPostmanAPI(context).then((data) {
-            setState(() {
-              portfolioData = data;
-            });
-          });
-        },
-        child: Icon(
-          Icons.refresh,
-        ),
-      ),
       body: Column(
         children: [
           gettopbarimage(),
@@ -57,6 +46,13 @@ class _PortfolioState extends State<Portfolio> {
                 ),
                 InkWell(
                   onTap: () async {
+                    profileConnection
+                        .fetchDataFromPostmanAPI(context)
+                        .then((data) {
+                      setState(() {
+                        portfolioData = data;
+                      });
+                    });
                     pickAndUploadFiles(
                       context,
                     );
@@ -79,14 +75,116 @@ class _PortfolioState extends State<Portfolio> {
             ),
           ),
           portfolioData == null
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
               : Expanded(
                   child: ListView.builder(
                     itemCount: portfolioData!.length,
                     itemBuilder: (context, index) {
                       final item = portfolioData![index];
-                      return ListTile(
-                        title: Text(item['cv_file']),
+                      return Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Color(
+                                0XFFD1D5DB,
+                              ),
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              8,
+                            ),
+                          ),
+                        ),
+                        height: 85,
+                        width: 327,
+                        padding: EdgeInsets.all(
+                          16,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            getSvgPicture(
+                              "assets/pdflogo.svg",
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Container(
+                              height: 51,
+                              width: 96,
+                              child: Column(
+                                children: [
+                                  AutoSizeText(
+                                    item["cv_file"],
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: Color(0xFF111827),
+                                      fontSize: 14,
+                                      fontFamily: 'SF Pro Display',
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0.14,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'CV.pdf 300KB',
+                                    style: TextStyle(
+                                      color: Color(0xFF6B7280),
+                                      fontSize: 12,
+                                      fontFamily: 'SF Pro Display',
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: 0.12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 100,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                top: 10,
+                              ),
+                              child: Row(
+                                children: [
+                                  getSvgPicture(
+                                    "assets/edit.svg",
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      await profileConnection.deleteportfoilio(
+                                        item["id"],
+                                        context,
+                                      );
+                                      profileConnection
+                                          .fetchDataFromPostmanAPI(context)
+                                          .then((data) {
+                                        setState(() {
+                                          portfolioData = data;
+                                        });
+                                      });
+                                    },
+                                    child: getSvgPicture(
+                                      "assets/circlex.svg",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -125,9 +223,11 @@ class _PortfolioState extends State<Portfolio> {
         imageFile,
         context,
       );
-      pdflist.add(
-        pdfFile.files.first,
-      );
+      profileConnection.fetchDataFromPostmanAPI(context).then((data) {
+        setState(() {
+          portfolioData = data;
+        });
+      });
     }
   }
 }

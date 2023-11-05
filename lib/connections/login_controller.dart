@@ -5,12 +5,17 @@ import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginConnection {
   static String baseUrl = "https://project2.amit-learning.com/api/";
   static String postEndPointLogin = "auth/login";
+  static String postEndPointgetprofile = "auth/profile";
+
   final client = varHttp.Client();
+
   Future<void> loginwithapi(
     String email,
     String password,
@@ -67,9 +72,19 @@ class LoginConnection {
       context.read<PasswordProvider>().setpass(
             password,
           );
+      final prefs = await SharedPreferences.getInstance();
+      if (prefs.getBool("rememberme") == true) {
+        prefs.setString("token", jsonResponse["token"]);
+        prefs.setString("Username", jsonResponse["user"]["name"]);
+        prefs.setString("Username", jsonResponse["user"]["email"]);
+      }
+
       responseData;
       print(request.fields);
       function();
+      print(
+        prefs.getString("token"),
+      );
     } else {
       // Request failed, handle the error
       print('API request failed with status code ${response.statusCode}');
@@ -113,6 +128,42 @@ class LoginConnection {
     } catch (e) {
       // Handle network errors.
       print('Error: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> getprofile(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
+      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final response = await client.get(
+      Uri.parse(
+        baseUrl + postEndPointgetprofile,
+      ),
+      headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
+    );
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response, parse the JSON
+      final Map<String, dynamic> data = json.decode(response.body);
+      final Map<String, dynamic> datas = data['data'];
+      print(data);
+      print(datas);
+      return datas;
+    } else {
+      print(
+        json.decode(
+          response.body,
+        ),
+      );
+      // If the server did not return a 200 OK response, throw an exception.
+      throw Exception('Failed to load data');
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/connections/login_controller.dart';
 import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ class CustomSecurity extends StatefulWidget {
 }
 
 class _CustomSecurityState extends State<CustomSecurity> {
+  LoginConnection loginConnection = LoginConnection();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,15 +50,29 @@ class _CustomSecurityState extends State<CustomSecurity> {
               Row(
                 children: [
                   widget.isbool
-                      ? Text(
-                          '${context.read<AccountEmailProvider>().accountemail}',
-                          style: TextStyle(
-                            color: Color(0xFF6B7280),
-                            fontSize: 14,
-                            fontFamily: 'SF Pro Display',
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.14,
-                          ),
+                      ? FutureBuilder(
+                          future: loginConnection.getprofile(context),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              print(snapshot.data);
+
+                              return Text(
+                                '${snapshot.data!['email']}',
+                                style: TextStyle(
+                                  color: Color(0xFF6B7280),
+                                  fontSize: 14,
+                                  fontFamily: 'SF Pro Display',
+                                  fontWeight: FontWeight.w400,
+                                  height: 0.10,
+                                  letterSpacing: 0.14,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+                            // By default, show a loading indicator
+                            return Text('');
+                          },
                         )
                       : Text(
                           widget.righttext,
