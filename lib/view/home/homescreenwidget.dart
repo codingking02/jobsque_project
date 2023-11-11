@@ -30,6 +30,18 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   static String baseUrl = "https://project2.amit-learning.com/api/";
   static String getalljobsendpoint = "jobs/sugest/2";
   final client = varHttp.Client();
+  List<Map<String, dynamic>>? data = [] ?? [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData().then((result) {
+      setState(() {
+        data = result;
+      });
+    });
+  }
+
   Future<Map<String, dynamic>> fetchData() async {
     final prefs = await SharedPreferences.getInstance();
     final headers1 = {
@@ -291,5 +303,40 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData().then((result) {
+      setState(() {
+        data = result;
+      });
+    });
+  }
+
+  Future<List<Map<String, dynamic>>?> fetchData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
+      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final response = await client.get(
+      Uri.parse(
+        baseUrl + getalljobsendpoint,
+      ),
+      headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      return List<Map<String, dynamic>>.from(jsonData['data']);
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 }

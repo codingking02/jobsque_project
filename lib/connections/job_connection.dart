@@ -115,4 +115,41 @@ class JobConnection {
       print('Error while uploading files: $e');
     }
   }
+
+  Future<List<Map<String, dynamic>>?> getapplyJobs(
+      BuildContext context, int userid) async {
+    // Replace with your API URL
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
+      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    try {
+      final response = await client.get(
+        Uri.parse(
+          baseUrl + applyjobendpoint + '/$userid',
+        ),
+        headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+        if (jsonResponse.containsKey('data') && jsonResponse['data'] is List) {
+          List<dynamic> portfolioList = jsonResponse['data'];
+          List<Map<String, dynamic>> portfolioData =
+              List<Map<String, dynamic>>.from(portfolioList);
+          return portfolioData;
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    return null;
+  }
 }

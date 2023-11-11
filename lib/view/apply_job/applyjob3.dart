@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jobsque_amit_project/connections/job_connection.dart';
 import 'package:jobsque_amit_project/data/provider/applyjobprovider.dart';
 import 'package:jobsque_amit_project/data/provider/job_provider.dart';
+import 'package:jobsque_amit_project/view/apply_job/finishedapply.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
@@ -264,6 +265,14 @@ class _ApplyJob3State extends State<ApplyJob3> {
                         context.read<JobProvider>().id,
                         context.read<JobProvider>().user_id,
                         context,
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return FinishedApply();
+                          },
+                        ),
                       );
                     },
                     child: Text(

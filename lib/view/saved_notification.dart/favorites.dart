@@ -190,7 +190,7 @@ class _FavoritesState extends State<Favorites> {
                                             height: 30,
                                           ),
                                           InkWell(
-                                            onTap: () {
+                                            onTap: () async {
                                               context
                                                   .read<JobProvider>()
                                                   .getjobdata(
@@ -208,6 +208,17 @@ class _FavoritesState extends State<Favorites> {
                                                     job['id'],
                                                     item['user_id'],
                                                   );
+                                              final prefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              prefs.setInt(
+                                                'userid',
+                                                item['user_id'],
+                                              );
+                                              prefs.setInt(
+                                                'jobid',
+                                                job['id'],
+                                              );
                                               dispose();
                                               Navigator.push(
                                                 context,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class FinishedApply extends StatefulWidget {
@@ -91,7 +92,16 @@ class _FinishedApplyState extends State<FinishedApply> {
                           ),
                         ),
                       ),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return HomeScreen();
+                            },
+                          ),
+                        );
+                      },
                       child: Text(
                         'Back To Home',
                         textAlign: TextAlign.center,
