@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobsque_amit_project/data/provider/applyjobprovider.dart';
 import 'package:jobsque_amit_project/view/apply_job/applyjob3.dart';
-import 'package:jobsque_amit_project/widgets/custom_jobtypecont.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
