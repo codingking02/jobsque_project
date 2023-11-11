@@ -1,7 +1,16 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/connections/favorites_connection.dart';
+import 'package:jobsque_amit_project/data/provider/job_provider.dart';
+import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
+import 'package:jobsque_amit_project/view/apply_job/job_deatil.dart';
 import 'package:jobsque_amit_project/widgets/customgetfavorites.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
+import 'package:http/http.dart' as varHttp;
+import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Favorites extends StatefulWidget {
   const Favorites({super.key});
@@ -12,16 +21,59 @@ class Favorites extends StatefulWidget {
 
 class _FavoritesState extends State<Favorites> {
   FavoritesConnection favoritesConnection = FavoritesConnection();
-  List<Map<String, dynamic>> data = [];
+  List<Map<String, dynamic>> dataList = [];
+  static String baseUrl = "https://project2.amit-learning.com/api/";
+  static String postfavoritesendpoint = "favorites";
+  late Timer timer;
+  final client = varHttp.Client();
+  bool? status;
+  Future<void> fetchDataFromPostmanAPI() async {
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
+      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final response = await client.get(
+      Uri.parse(
+        baseUrl + postfavoritesendpoint,
+      ),
+      headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      status = true;
+      if (data['status'] == true) {
+        dataList = List<Map<String, dynamic>>.from(data['data']);
+      }
+      print(response.body);
+    } else {
+      status = false;
+      print(response.body);
+      throw Exception('Failed to load data');
+    }
+    setState(() {}); // Trigger a rebuild to display the fetched data
+  }
 
   @override
   void initState() {
     super.initState();
-    favoritesConnection.getAllSaved(context).then((jsonData) {
-      setState(() {
-        data = jsonData!;
-      });
+
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      // Call your continuous function here
+      fetchDataFromPostmanAPI();
+      setState(() {});
     });
+  }
+
+  void dispose() {
+    // Don't forget to cancel the timer when the widget is disposed to avoid memory leaks
+    timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -64,7 +116,7 @@ class _FavoritesState extends State<Favorites> {
             ),
             child: Center(
               child: Text(
-                '${data!.length} Job Saved',
+                '${status == true ? dataList.length : 0} Job Saved',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFF6B7280),
@@ -81,119 +133,145 @@ class _FavoritesState extends State<Favorites> {
           ),
           Expanded(
             child: Center(
-              child: data != null
-                  ? Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 24,
-                      ),
-                      child: ListView.builder(
-                        itemCount: data.length,
-                        itemBuilder: (context, index) {
-                          final datas = data[index];
-                          String joblocation = datas['location'];
-                          final jobloc = joblocation.substring(0, 14);
-                          String createdat = datas['created_at'];
-                          final time = createdat.substring(0, 10);
+                child: Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: status == true
+                  ? ListView.builder(
+                      itemCount: dataList.length,
+                      itemBuilder: (context, index) {
+                        final item = dataList[index];
+                        final job = item['jobs'];
+                        String joblocation = item['location'];
+                        final jobloc = joblocation.substring(0, 14);
+                        String createdat = item['created_at'];
+                        final time = createdat.substring(0, 10);
 
-                          return GetFavoritesWidget(
-                            networkimage: datas['image'],
-                            jobname: datas['jobs']['name'],
-                            jobplace: jobloc,
-                            function: () {
-                              showModalBottomSheet(
-                                isDismissible: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(
-                                      16,
-                                    ),
+                        return GetFavoritesWidget(
+                          networkimage: item['image'],
+                          jobname: job['name'],
+                          jobplace: '${job['comp_name']}.${jobloc}',
+                          function: () {
+                            showModalBottomSheet(
+                              isDismissible: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(
+                                    16,
                                   ),
                                 ),
-                                context: context,
-                                builder: (context) {
-                                  return StatefulBuilder(builder: (
-                                    BuildContext context,
-                                    StateSetter mystate,
-                                  ) {
-                                    return SizedBox(
-                                      height: 271,
-                                      child: Container(
-                                        margin: EdgeInsets.symmetric(
-                                          horizontal: 24,
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 12,
+                              ),
+                              context: context,
+                              builder: (context) {
+                                return StatefulBuilder(
+                                    builder: (context, mystate) {
+                                  return SizedBox(
+                                    height: 271,
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: 24,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 12,
+                                          ),
+                                          Center(
+                                            child: getSvgPicture(
+                                              'assets/smallline.svg',
                                             ),
-                                            Center(
-                                              child: getSvgPicture(
-                                                'assets/smallline.svg',
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 30,
-                                            ),
-                                            getSvgPicture(
+                                          ),
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              context
+                                                  .read<JobProvider>()
+                                                  .getjobdata(
+                                                    job['name'],
+                                                    item['image'],
+                                                    job['job_time_type'],
+                                                    job['comp_email'],
+                                                    job['about_comp'],
+                                                    job['job_description'],
+                                                    job['job_skill'],
+                                                    job['comp_name'],
+                                                    job['job_type'],
+                                                    jobloc,
+                                                    job['comp_website'],
+                                                    job['id'],
+                                                    item['user_id'],
+                                                  );
+                                              dispose();
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return JobDetail();
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                            child: getSvgPicture(
                                               "assets/Apply.svg",
                                             ),
-                                            SizedBox(
-                                              height: 15,
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          getSvgPicture(
+                                            "assets/Share.svg",
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          InkWell(
+                                            onTap: () async {
+                                              setState(() {});
+                                              mystate;
+                                              mystate(
+                                                () {},
+                                              );
+                                              fetchDataFromPostmanAPI();
+                                              favoritesConnection.deleteSaved(
+                                                item['id'],
+                                                context,
+                                              );
+                                              mystate;
+                                              mystate(
+                                                () {},
+                                              );
+                                              fetchDataFromPostmanAPI();
+                                              setState(() {});
+                                              mystate;
+                                              mystate(
+                                                () {},
+                                              );
+                                            },
+                                            child: getSvgPicture(
+                                              "assets/Cancel.svg",
                                             ),
-                                            getSvgPicture(
-                                              "assets/Share.svg",
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                favoritesConnection
-                                                    .getAllSaved(context)
-                                                    .then((jsonData) {
-                                                  mystate(() {
-                                                    data = jsonData!;
-                                                  });
-                                                });
-                                                favoritesConnection.deleteSaved(
-                                                  datas['id'],
-                                                  context,
-                                                );
-                                                favoritesConnection
-                                                    .getAllSaved(context)
-                                                    .then((jsonData) {
-                                                  mystate(() {
-                                                    data = jsonData!;
-                                                  });
-                                                });
-                                              },
-                                              child: getSvgPicture(
-                                                "assets/Cancel.svg",
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                    );
-                                  });
-                                },
-                              );
-                            },
-                            timetext: time,
-                          );
-                        },
-                      ),
+                                    ),
+                                  );
+                                });
+                              },
+                            );
+                          },
+                          timetext: time,
+                        );
+                      },
                     )
-                  : data == null || data.isEmpty
-                      ? CircularProgressIndicator()
-                      : Text(
-                          'no data',
-                        ),
-            ),
+                  : CircularProgressIndicator(),
+            )),
           ),
         ],
       ),

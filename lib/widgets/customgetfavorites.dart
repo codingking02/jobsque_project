@@ -37,63 +37,70 @@ class _GetFavoritesWidgetState extends State<GetFavoritesWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                child: Image.network(
-                  widget.networkimage,
-                ),
-              ),
-              SizedBox(
-                width: 16,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  SizedBox(
-                    child: Text(
-                      widget.jobname,
-                      style: TextStyle(
-                        color: Color(0xFF111827),
-                        fontSize: 18,
-                        fontFamily: 'SF Pro Display',
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.18,
-                      ),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    child: Image.network(
+                      widget.networkimage,
                     ),
                   ),
                   SizedBox(
-                    height: 4,
+                    width: 16,
                   ),
-                  SizedBox(
-                    child: Text(
-                      widget.jobplace,
-                      style: TextStyle(
-                        color: Color(0xFF374151),
-                        fontSize: 12,
-                        fontFamily: 'SF Pro Display',
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.12,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        child: Text(
+                          widget.jobname,
+                          style: TextStyle(
+                            color: Color(0xFF111827),
+                            fontSize: 18,
+                            fontFamily: 'SF Pro Display',
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.18,
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      SizedBox(
+                        child: Text(
+                          widget.jobplace,
+                          style: TextStyle(
+                            color: Color(0xFF374151),
+                            fontSize: 12,
+                            fontFamily: 'SF Pro Display',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 0.12,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
               SizedBox(
-                width: 140,
+                width: 40,
               ),
-              InkWell(
-                onTap: () {
-                  widget.function();
-                },
-                child: getSvgPicture(
-                  'assets/more.svg',
-                ),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      widget.function();
+                    },
+                    child: getSvgPicture(
+                      'assets/more.svg',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

@@ -1,14 +1,19 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unused_local_variable
+
+import 'dart:async';
+import 'dart:convert';
 
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/connections/favorites_connection.dart';
 import 'package:jobsque_amit_project/connections/job_connection.dart';
+import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
 import 'package:jobsque_amit_project/widgets/custom_jobtype.dart';
 import 'package:jobsque_amit_project/widgets/customalljobwidget.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'dart:core';
-
+import 'package:http/http.dart' as varHttp;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JobsScreen extends StatefulWidget {
@@ -19,26 +24,47 @@ class JobsScreen extends StatefulWidget {
 }
 
 class _JobsScreenState extends State<JobsScreen> {
-  List<Map<String, dynamic>>? jobdata;
-  JobConnection jobConnection = JobConnection();
   FavoritesConnection favoritesConnection = FavoritesConnection();
-  List<Map<String, dynamic>> data = [];
+  static String baseUrl = "https://project2.amit-learning.com/api/";
+  static String getalljobsendpoint = "jobs";
+  final client = varHttp.Client();
+  List<Map<String, dynamic>>? data = [] ?? [];
+
   @override
   void initState() {
     super.initState();
-    jobConnection.getAllJobs(context).then((data) {
+    fetchData().then((result) {
       setState(() {
-        jobdata = data;
-      });
-    });
-    favoritesConnection.getAllSaved(context).then((jsonData) {
-      setState(() {
-        data = jsonData!;
+        data = result;
       });
     });
   }
 
-  bool issaved = false;
+  Future<List<Map<String, dynamic>>?> fetchData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final headers1 = {
+      'Authorization': 'Bearer ${prefs.getString("token")}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final headers2 = {
+      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
+      'Content-Type': 'application/json', // You can add other headers if needed
+    };
+    final response = await client.get(
+      Uri.parse(
+        baseUrl + getalljobsendpoint,
+      ),
+      headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      return List<Map<String, dynamic>>.from(jsonData['data']);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   bool istapped = false;
 
   SizedBox box8 = SizedBox(
@@ -90,7 +116,6 @@ class _JobsScreenState extends State<JobsScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      print(jobdata);
                       showModalBottomSheet(
                         isScrollControlled: true,
                         shape: RoundedRectangleBorder(
@@ -432,42 +457,72 @@ class _JobsScreenState extends State<JobsScreen> {
           SizedBox(
             height: 20,
           ),
-          gettitleforjob(),
+          Container(
+            alignment: Alignment.center,
+            width: 1000,
+            height: 36,
+            decoration: ShapeDecoration(
+              color: Color(0xFFF4F4F5),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  width: 1,
+                  color: Color(
+                    0xFFE5E7EB,
+                  ),
+                ),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                '${data!.length ?? ''} Job Saved',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF6B7280),
+                  fontSize: 14,
+                  fontFamily: 'SF Pro Display',
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.14,
+                ),
+              ),
+            ),
+          ),
           SizedBox(
             height: 25,
           ),
           Expanded(
-              child: Center(
-            child: jobdata != null
-                ? Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 24,
+            child: Center(
+              child: data == null
+                  ? CircularProgressIndicator()
+                  : Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 24,
+                      ),
+                      child: ListView.builder(
+                        itemCount: data!.length == 0 ? 0 : data!.length,
+                        itemBuilder: (context, index) {
+                          final jobItem = data![index] ?? {};
+                          String joblocation = jobItem['location'];
+                          final jobloc = joblocation.substring(0, 14);
+
+                          return CustomAllJobs(
+                            function: () async {
+                              await favoritesConnection.postDataWithId(
+                                jobItem['id'],
+                                context,
+                              );
+                            },
+                            networkimage: jobItem['image'] ?? '',
+                            jobname: jobItem['name'] ?? '',
+                            jobplace: '${jobItem['comp_name']}.${jobloc}' ?? '',
+                            jobdis: jobItem['job_time_type'] ?? '',
+                            jobtype: jobItem['job_type'] ?? '',
+                            jobsalary: jobItem['salary'] ?? '',
+                          );
+                        },
+                      ),
                     ),
-                    child: ListView.builder(
-                      itemCount: jobdata!.length,
-                      itemBuilder: (context, index) {
-                        final jobItem = jobdata![index];
-                        String joblocation = jobItem['location'];
-                        final jobloc = joblocation.substring(0, 14);
-                        return CustomAllJobs(
-                          networkimage: jobItem['image'],
-                          jobname: jobItem['name'],
-                          jobplace: jobloc,
-                          jobdis: jobItem['job_time_type'],
-                          jobtype: jobItem['job_type'],
-                          jobsalary: jobItem['salary'],
-                          function: () async {
-                            await favoritesConnection.postDataWithId(
-                              jobItem['id'],
-                              context,
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  )
-                : CircularProgressIndicator(),
-          )),
+            ),
+          ),
         ],
       ),
     );

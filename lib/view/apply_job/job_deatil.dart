@@ -1,6 +1,11 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jobsque_amit_project/data/provider/job_provider.dart';
+import 'package:jobsque_amit_project/view/apply_job/applyjob1.dart';
 import 'package:jobsque_amit_project/widgets/images.dart';
+import 'package:jobsque_amit_project/widgets/jobdetailwidget.dart';
+import 'package:provider/provider.dart';
 
 class JobDetail extends StatefulWidget {
   JobDetail({super.key});
@@ -62,9 +67,7 @@ class _JobDetailState extends State<JobDetail> {
             height: 32,
           ),
           Center(
-            child: SvgPicture.asset(
-              'assets/senioruicontent.svg',
-            ),
+            child: JobDetailWidget(),
           ),
           SizedBox(
             height: 32,
@@ -72,42 +75,146 @@ class _JobDetailState extends State<JobDetail> {
           Center(
             child: CustomButton(),
           ),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(
             child: Stack(
               children: [
                 ispressedDes
-                    ? ListView(
-                        physics: BouncingScrollPhysics(),
-                        children: [
-                          Center(
-                            child: SvgPicture.asset(
-                              'assets/jobdessv.svg',
+                    ? Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 24,
+                        ),
+                        child: ListView(
+                          physics: BouncingScrollPhysics(),
+                          children: [
+                            Text(
+                              'Job Description',
+                              style: TextStyle(
+                                color: Color(0xFF111827),
+                                fontSize: 14,
+                                fontFamily: 'SF Pro Display',
+                                fontWeight: FontWeight.w500,
+                                height: 0.10,
+                                letterSpacing: 0.14,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          SvgPicture.asset(
-                            'assets/skillrequiredsv.svg',
-                          ),
-                        ],
+                            SizedBox(
+                              height: 8,
+                            ),
+                            AutoSizeText(
+                              context.read<JobProvider>().job_description,
+                              maxLines: 9,
+                              style: TextStyle(
+                                color: Color(0xFF4B5563),
+                                fontSize: 12,
+                                fontFamily: 'SF Pro Display',
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.12,
+                                height: 1.7,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Text(
+                              'Skill Required',
+                              style: TextStyle(
+                                color: Color(0xFF111827),
+                                fontSize: 14,
+                                fontFamily: 'SF Pro Display',
+                                fontWeight: FontWeight.w500,
+                                height: 0.10,
+                                letterSpacing: 0.14,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            AutoSizeText(
+                              context.read<JobProvider>().job_skill,
+                              maxLines: 9,
+                              style: TextStyle(
+                                color: Color(0xFF4B5563),
+                                fontSize: 12,
+                                fontFamily: 'SF Pro Display',
+                                fontWeight: FontWeight.w400,
+                                height: 1.7,
+                                letterSpacing: 0.12,
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     : ispressedComp
-                        ? ListView(
-                            physics: BouncingScrollPhysics(),
-                            children: [
-                              Center(
-                                child: SvgPicture.asset(
-                                  'assets/contactus.svg',
+                        ? Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 24,
+                            ),
+                            child: ListView(
+                              physics: BouncingScrollPhysics(),
+                              children: [
+                                Text(
+                                  'Contact Us',
+                                  style: TextStyle(
+                                    color: Color(0xFF111827),
+                                    fontSize: 14,
+                                    fontFamily: 'SF Pro Display',
+                                    fontWeight: FontWeight.w500,
+                                    height: 0.10,
+                                    letterSpacing: 0.14,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              SvgPicture.asset(
-                                'assets/aboutcompany.svg',
-                              ),
-                            ],
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(
+                                  children: [
+                                    getcontactus(
+                                      'Email',
+                                      context.read<JobProvider>().comp_email,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    getcontactus(
+                                      'Website',
+                                      context.read<JobProvider>().comp_website,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                Text(
+                                  'Contact Us',
+                                  style: TextStyle(
+                                    color: Color(0xFF111827),
+                                    fontSize: 14,
+                                    fontFamily: 'SF Pro Display',
+                                    fontWeight: FontWeight.w500,
+                                    height: 0.10,
+                                    letterSpacing: 0.14,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                AutoSizeText(
+                                  context.read<JobProvider>().about_comp,
+                                  maxLines: 9,
+                                  style: TextStyle(
+                                    color: Color(0xFF4B5563),
+                                    fontSize: 12,
+                                    fontFamily: 'SF Pro Display',
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.7,
+                                    letterSpacing: 0.12,
+                                  ),
+                                ),
+                              ],
+                            ),
                           )
                         : ispressedPeo
                             ? ListView(
@@ -164,6 +271,14 @@ class _JobDetailState extends State<JobDetail> {
                             ),
                           )),
                       onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ApplyJob1();
+                            },
+                          ),
+                        );
                         setState(() {});
                       },
                       child: Text(
@@ -316,6 +431,57 @@ class _JobDetailState extends State<JobDetail> {
                     ),
                   ],
                 ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getcontactus(String texttype, String textvalue) {
+    return Container(
+      clipBehavior: Clip.none,
+      width: 175,
+      height: 56,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: ShapeDecoration(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: AutoSizeText(
+              texttype,
+              maxLines: 1,
+              style: TextStyle(
+                color: Color(0xFF9CA3AF),
+                fontSize: 12,
+                fontFamily: 'SF Pro Display',
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.12,
+              ),
+            ),
+          ),
+          const SizedBox(height: 2),
+          SizedBox(
+            width: double.infinity,
+            child: AutoSizeText(
+              textvalue,
+              maxLines: 1,
+              style: TextStyle(
+                color: Color(0xFF111827),
+                fontSize: 14,
+                fontFamily: 'SF Pro Display',
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.14,
               ),
             ),
           ),

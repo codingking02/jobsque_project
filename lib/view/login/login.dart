@@ -5,8 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jobsque_amit_project/connections/login_controller.dart';
 import 'package:jobsque_amit_project/connections/register_controller.dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
+import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/view/home/jobs_screen.dart';
 import 'package:jobsque_amit_project/view/register/register_screen.dart';
+import 'package:jobsque_amit_project/view/saved_notification.dart/favorites.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -408,7 +410,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return JobsScreen();
+                            return Favorites();
                           },
                         ));
                       });

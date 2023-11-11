@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/data/provider/applyjobprovider.dart';
+import 'package:jobsque_amit_project/view/apply_job/applyjob2.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:provider/provider.dart';
 
 class ApplyJob1 extends StatefulWidget {
   const ApplyJob1({super.key});
@@ -14,6 +17,8 @@ class _ApplyJob1State extends State<ApplyJob1> {
   final FocusNode inputFocusNode = FocusNode();
   var maskFormatter = new MaskTextInputFormatter(
       mask: '####-###-####', filter: {"#": RegExp(r'[0-9]')});
+  var namecontroller = TextEditingController();
+  var emailcontroller = TextEditingController();
   bool isbrightname = false;
   bool isbrightemail = false;
   @override
@@ -101,6 +106,7 @@ class _ApplyJob1State extends State<ApplyJob1> {
                   Container(
                     height: 60,
                     child: TextFormField(
+                      controller: namecontroller,
                       onChanged: (value) {
                         if (value.length > 0) {
                           isbrightname = true;
@@ -161,6 +167,7 @@ class _ApplyJob1State extends State<ApplyJob1> {
                   Container(
                     height: 60,
                     child: TextFormField(
+                      controller: emailcontroller,
                       onChanged: (value) {
                         if (value.length > 0) {
                           isbrightemail = true;
@@ -329,7 +336,21 @@ class _ApplyJob1State extends State<ApplyJob1> {
                               1,
                             ),
                           )),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        context.read<ApplyJobProvider>().getapplybio(
+                              namecontroller.text,
+                              emailcontroller.text,
+                              maskFormatter.getUnmaskedText(),
+                            );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ApplyJob2();
+                            },
+                          ),
+                        );
+                      },
                       child: Text(
                         'Next',
                         textAlign: TextAlign.center,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/data/provider/applyjobprovider.dart';
+import 'package:jobsque_amit_project/data/provider/job_provider.dart';
+import 'package:provider/provider.dart';
 
 class JobTypeCont extends StatefulWidget {
   final String text;
@@ -19,6 +22,9 @@ class _JobTypeContState extends State<JobTypeCont> {
       onTap: () {
         istapped = !istapped;
         setState(() {});
+        context.read<ApplyJobProvider>().getworktype(
+              widget.text,
+            );
       },
       child: Container(
         margin: EdgeInsets.only(
@@ -30,14 +36,19 @@ class _JobTypeContState extends State<JobTypeCont> {
         height: 90,
         width: 1000,
         decoration: ShapeDecoration(
+          color: istapped ? Color(0xffD6E4FF) : null,
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color: Color.fromRGBO(
-                209,
-                213,
-                219,
-                1,
-              ),
+              color: istapped
+                  ? Color(
+                      0xff3366FF,
+                    )
+                  : Color.fromRGBO(
+                      209,
+                      213,
+                      219,
+                      1,
+                    ),
             ),
             borderRadius: BorderRadius.circular(
               8,

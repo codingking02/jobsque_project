@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
+import 'package:jobsque_amit_project/data/provider/applyjobprovider.dart';
 import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
+import 'package:jobsque_amit_project/data/provider/job_provider.dart';
 import 'package:jobsque_amit_project/data/provider/otpprovider..dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/data/provider/phonenumberprovider.dart';
@@ -8,6 +10,8 @@ import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/data/provider/registertokenprovider.dart';
 import 'package:jobsque_amit_project/data/provider/resetemailprovider.dart';
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
+import 'package:jobsque_amit_project/view/home/homescreenwidget.dart';
+import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/view/home/jobs_screen.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
 import 'package:jobsque_amit_project/view/saved_notification.dart/favorites.dart';
@@ -22,6 +26,12 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => ApplyJobProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => JobProvider(),
+        ),
         ChangeNotifierProvider(
           create: (context) => RegisterTokenProvider(),
         ),
@@ -64,7 +74,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: rememberme == true ? JobsScreen() : LoginScreen(),
+      home: rememberme == true ? HomeScreen() : LoginScreen(),
     );
   }
 }

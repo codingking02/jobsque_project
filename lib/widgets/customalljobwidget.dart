@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +10,7 @@ class CustomAllJobs extends StatefulWidget {
   String jobtype;
   String jobsalary;
   Function function;
+
   CustomAllJobs({
     super.key,
     required this.networkimage,
@@ -28,15 +27,34 @@ class CustomAllJobs extends StatefulWidget {
 }
 
 class _CustomAllJobsState extends State<CustomAllJobs> {
-  Future<bool> getissaved() async {
-    final prefs = await SharedPreferences.getInstance();
-    final issaved = prefs.getBool("issaved");
-    return issaved as bool;
-  }
+  SharedPreferences? sharedPreferences;
+  String selectedImage = 'blackarchive.png';
+  // Default image
 
   @override
   void initState() {
     super.initState();
+    loadSelectedImage();
+    initializeSharedPreferences();
+  }
+
+  Future<void> loadSelectedImage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectedImage = prefs.getString('selectedImage') ?? selectedImage;
+    });
+  }
+
+  Future<void> saveSelectedImage(String imageName) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedImage', imageName);
+    setState(() {
+      selectedImage = imageName;
+    });
+  }
+
+  Future<void> initializeSharedPreferences() async {
+    sharedPreferences = await SharedPreferences.getInstance();
   }
 
   @override
@@ -52,49 +70,53 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                child: Image.network(
-                  widget.networkimage,
-                ),
-              ),
-              SizedBox(
-                width: 16,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  SizedBox(
-                    child: Text(
-                      widget.jobname,
-                      style: TextStyle(
-                        color: Color(0xFF111827),
-                        fontSize: 18,
-                        fontFamily: 'SF Pro Display',
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.18,
-                      ),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    child: Image.network(
+                      widget.networkimage ?? '',
                     ),
                   ),
                   SizedBox(
-                    height: 4,
+                    width: 16,
                   ),
-                  SizedBox(
-                    child: Text(
-                      widget.jobplace,
-                      style: TextStyle(
-                        color: Color(0xFF374151),
-                        fontSize: 12,
-                        fontFamily: 'SF Pro Display',
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.12,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        child: Text(
+                          widget.jobname ?? '',
+                          style: TextStyle(
+                            color: Color(0xFF111827),
+                            fontSize: 18,
+                            fontFamily: 'SF Pro Display',
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.18,
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      SizedBox(
+                        child: Text(
+                          widget.jobplace ?? '',
+                          style: TextStyle(
+                            color: Color(0xFF374151),
+                            fontSize: 12,
+                            fontFamily: 'SF Pro Display',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 0.12,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -103,18 +125,14 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
               ),
               InkWell(
                 onTap: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  prefs.setBool("issaved", true);
                   setState(() {});
                   widget.function();
+                  saveSelectedImage(
+                    "bluearchive.png",
+                  );
+                  setState(() {});
                 },
-                child: getissaved().then((value) => value) == true
-                    ? Image.asset(
-                        "assets/bluearchive.png",
-                      )
-                    : Image.asset(
-                        "assets/blackarchive.png",
-                      ),
+                child: Image.asset('assets/$selectedImage'),
               ),
             ],
           ),
@@ -168,7 +186,13 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
                 ),
               )
             ],
-          )
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Divider(
+            thickness: 2,
+          ),
         ],
       ),
     );
