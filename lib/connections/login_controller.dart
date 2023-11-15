@@ -5,7 +5,7 @@ import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/data/provider/profilenameprovider.dart';
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
-import 'package:path/path.dart';
+import 'package:jobsque_amit_project/data/provider/useridprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,8 +72,11 @@ class LoginConnection {
       context.read<PasswordProvider>().setpass(
             password,
           );
+      context.read<UserIdProvider>().setuserid(jsonResponse["user"]["id"]);
       final prefs = await SharedPreferences.getInstance();
+
       if (prefs.getBool("rememberme") == true) {
+        prefs.setString("userid", jsonResponse["user"]['id']);
         prefs.setString("token", jsonResponse["token"]);
         prefs.setString("Username", jsonResponse["user"]["name"]);
         prefs.setString("Username", jsonResponse["user"]["email"]);

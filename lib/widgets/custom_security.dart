@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/connections/login_controller.dart';
-import 'package:jobsque_amit_project/data/provider/accountemailprovider.dart';
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CustomSecurity extends StatefulWidget {

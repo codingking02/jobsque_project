@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomSearch extends StatefulWidget {
-  final double width;
-  final Function ontap;
-  final Function onsub;
-  final Function onchange;
-  final TextEditingController textEditingController;
-  const CustomSearch({
+  double width;
+  Function ontap;
+  Function onsub;
+  Function onchange;
+
+  CustomSearch({
     super.key,
     required this.onchange,
     required this.onsub,
     required this.ontap,
-    required this.textEditingController,
     required this.width,
   });
 
@@ -20,23 +20,30 @@ class CustomSearch extends StatefulWidget {
 }
 
 class _CustomSearchState extends State<CustomSearch> {
+  TextEditingController searchcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
       width: widget.width,
       height: 48,
       child: TextField(
-        controller: widget.textEditingController,
+        controller: searchcontroller,
         onTap: () {
           widget.ontap();
           setState(() {});
         },
-        onSubmitted: (value) {
+        onSubmitted: (value) async {
           widget.onsub();
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString(
+            "searchinput",
+            value,
+          );
           setState(() {});
         },
         onChanged: (value) {
           widget.onchange();
+
           setState(() {});
         },
         autocorrect: false,

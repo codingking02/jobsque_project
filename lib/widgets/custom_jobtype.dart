@@ -8,10 +8,12 @@ class JobTypeButton extends StatefulWidget {
     required this.istapped,
     required this.text,
     required this.width,
+    required this.function,
   });
   double width;
   bool istapped;
   String text;
+  Function function;
 
   @override
   State<JobTypeButton> createState() => _JobTypeButtonState();
@@ -68,6 +70,7 @@ class _JobTypeButtonState extends State<JobTypeButton> {
               ),
             ),
             onPressed: () {
+              widget.function();
               setState(() {
                 widget.istapped = !widget.istapped;
               });

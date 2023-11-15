@@ -1,4 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 

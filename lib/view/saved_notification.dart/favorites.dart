@@ -8,7 +8,6 @@ import 'package:jobsque_amit_project/view/apply_job/job_deatil.dart';
 import 'package:jobsque_amit_project/widgets/customgetfavorites.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:http/http.dart' as varHttp;
-import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

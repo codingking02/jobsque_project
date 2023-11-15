@@ -2,33 +2,33 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CustomAllJobs extends StatefulWidget {
-  String networkimage;
-  String jobname;
-  String jobplace;
-  String jobdis;
-  String jobtype;
-  String jobsalary;
-  Function function;
-
-  CustomAllJobs({
+class SuggestedJob extends StatefulWidget {
+  SuggestedJob({
     super.key,
     required this.networkimage,
     required this.jobname,
     required this.jobplace,
+    required this.function,
     required this.jobdis,
     required this.jobtype,
     required this.jobsalary,
-    required this.function,
+    required this.function1,
   });
-
+  String networkimage;
+  String jobname;
+  String jobplace;
+  Function function;
+  String jobdis;
+  String jobtype;
+  String jobsalary;
+  Function function1;
   @override
-  State<CustomAllJobs> createState() => _CustomAllJobsState();
+  State<SuggestedJob> createState() => _SuggestedJobState();
 }
 
-class _CustomAllJobsState extends State<CustomAllJobs> {
+class _SuggestedJobState extends State<SuggestedJob> {
   SharedPreferences? sharedPreferences;
-  String selectedImage = 'blackarchive.png';
+  String selectedImage = 'whitearchive.png';
   // Default image
 
   @override
@@ -60,10 +60,21 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 1000,
-      height: 140,
-      padding: EdgeInsets.only(
-        bottom: 16,
+      width: 500,
+      height: 183,
+      padding: EdgeInsets.fromLTRB(
+        16,
+        18,
+        16,
+        18,
+      ),
+      decoration: ShapeDecoration(
+        color: Color.fromARGB(255, 173, 12, 0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            5,
+          ),
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -93,7 +104,7 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
                         child: Text(
                           widget.jobname ?? '',
                           style: TextStyle(
-                            color: Color(0xFF111827),
+                            color: Colors.white,
                             fontSize: 18,
                             fontFamily: 'SF Pro Display',
                             fontWeight: FontWeight.w500,
@@ -108,7 +119,7 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
                         child: Text(
                           widget.jobplace ?? '',
                           style: TextStyle(
-                            color: Color(0xFF374151),
+                            color: Colors.grey,
                             fontSize: 12,
                             fontFamily: 'SF Pro Display',
                             fontWeight: FontWeight.w400,
@@ -137,64 +148,93 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
             height: 25,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  getjobdis(
-                    widget.jobdis,
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  getjobdis(
-                    widget.jobtype,
-                  ),
-                ],
+              getjobdis(
+                widget.jobdis,
               ),
-              Row(
-                children: [
-                  SizedBox(
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${widget.jobsalary}L.E',
-                            style: TextStyle(
-                              color: Color(0xFF2E8E18),
-                              fontSize: 16,
-                              fontFamily: 'SF Pro Display',
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.16,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '/Month',
-                            style: TextStyle(
-                              color: Color(0xFF6B7280),
-                              fontSize: 12,
-                              fontFamily: 'SF Pro Display',
-                              fontWeight: FontWeight.w500,
-                              height: 0.12,
-                              letterSpacing: 0.12,
-                            ),
-                          ),
-                        ],
-                      ),
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
-                ],
-              )
+              SizedBox(
+                width: 10,
+              ),
+              getjobdis(
+                widget.jobtype,
+              ),
             ],
           ),
           SizedBox(
-            height: 15,
+            height: 20,
           ),
-          Divider(
-            thickness: 2,
-          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${widget.jobsalary}L.E',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'SF Pro Display',
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.16,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '/Month',
+                        style: TextStyle(
+                          color: Color(0xFF6B7280),
+                          fontSize: 17,
+                          fontFamily: 'SF Pro Display',
+                          fontWeight: FontWeight.w500,
+                          height: 0.12,
+                          letterSpacing: 0.12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.right,
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  widget.function1();
+                },
+                child: Container(
+                  width: 96,
+                  height: 32,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  decoration: ShapeDecoration(
+                    color: Color(0xFF3366FF),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(1000),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Apply now',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'SF Pro Display',
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
@@ -205,8 +245,11 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
   ) {
     return Container(
       decoration: ShapeDecoration(
-        color: Color(
-          0xffD6E4FF,
+        color: Color.fromRGBO(
+          255,
+          255,
+          255,
+          0.14,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
@@ -214,7 +257,8 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
           ),
         ),
       ),
-      height: 26,
+      height: 30,
+      width: 87,
       padding: EdgeInsets.fromLTRB(
         16,
         4,
@@ -225,7 +269,7 @@ class _CustomAllJobsState extends State<CustomAllJobs> {
         child: AutoSizeText(
           text,
           style: TextStyle(
-            color: Color(0xFF3366FF),
+            color: Colors.white,
             fontSize: 12,
             fontFamily: 'SF Pro Display',
             fontWeight: FontWeight.w400,

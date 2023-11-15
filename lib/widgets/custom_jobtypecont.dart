@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/data/provider/applyjobprovider.dart';
-import 'package:jobsque_amit_project/data/provider/job_provider.dart';
 import 'package:provider/provider.dart';
 
 class JobTypeCont extends StatefulWidget {

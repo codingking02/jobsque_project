@@ -6,8 +6,11 @@ import 'dart:convert';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/connections/favorites_connection.dart';
-import 'package:jobsque_amit_project/connections/job_connection.dart';
+import 'package:jobsque_amit_project/data/provider/filterjobprovider.dart';
+import 'package:jobsque_amit_project/data/provider/job_search_provider.dart';
+
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
+import 'package:jobsque_amit_project/view/home/nosearchfoundwidget.dart';
 import 'package:jobsque_amit_project/widgets/custom_jobtype.dart';
 import 'package:jobsque_amit_project/widgets/customalljobwidget.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
@@ -15,6 +18,8 @@ import 'dart:core';
 import 'package:http/http.dart' as varHttp;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../data/provider/job_provider.dart';
 
 class JobsScreen extends StatefulWidget {
   JobsScreen({super.key});
@@ -25,47 +30,12 @@ class JobsScreen extends StatefulWidget {
 
 class _JobsScreenState extends State<JobsScreen> {
   FavoritesConnection favoritesConnection = FavoritesConnection();
-  static String baseUrl = "https://project2.amit-learning.com/api/";
-  static String getalljobsendpoint = "jobs";
-  final client = varHttp.Client();
-  List<Map<String, dynamic>>? data = [] ?? [];
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData().then((result) {
-      setState(() {
-        data = result;
-      });
-    });
-  }
-
-  Future<List<Map<String, dynamic>>?> fetchData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final headers1 = {
-      'Authorization': 'Bearer ${prefs.getString("token")}',
-      'Content-Type': 'application/json', // You can add other headers if needed
-    };
-    final headers2 = {
-      'Authorization': 'Bearer ${context.read<TokenProvider>().token}',
-      'Content-Type': 'application/json', // You can add other headers if needed
-    };
-    final response = await client.get(
-      Uri.parse(
-        baseUrl + getalljobsendpoint,
-      ),
-      headers: prefs.getBool("rememberme") == true ? headers1 : headers2,
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonData = json.decode(response.body);
-      return List<Map<String, dynamic>>.from(jsonData['data']);
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
-
   bool istapped = false;
+  bool istapped2 = false;
+  var namecontroller = TextEditingController();
+  var locationcontroller = TextEditingController();
+  var salarycontroller = SingleValueDropDownController();
+  List<String> jobtypelist = [];
 
   SizedBox box8 = SizedBox(
     height: 8,
@@ -83,23 +53,28 @@ class _JobsScreenState extends State<JobsScreen> {
 
   List<DropDownValueModel> dropdown = [
     DropDownValueModel(
-      name: '\$5k-\$10k',
-      value: null,
+      name: '17K-19K',
+      value: "18000",
     ),
     DropDownValueModel(
-      name: '\$10k-\$15k',
-      value: null,
+      name: '15k-17k',
+      value: "16000",
     ),
     DropDownValueModel(
-      name: '\$15k-\$20k',
-      value: null,
+      name: '19k-21k',
+      value: "20000",
     ),
   ];
-
+  String name = '';
+  String location = '';
+  String salary = '';
+  bool filtred = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    final jobProvider = Provider.of<JobSeaarchProvider>(context);
+    final jobProviderfilter = Provider.of<FilterJobProvider>(context);
+    return Expanded(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -126,7 +101,7 @@ class _JobsScreenState extends State<JobsScreen> {
                         context: context,
                         builder: (context) {
                           return StatefulBuilder(
-                            builder: (context, setState) {
+                            builder: (context, mystate) {
                               return SizedBox(
                                 height: 650,
                                 child: Padding(
@@ -164,15 +139,21 @@ class _JobsScreenState extends State<JobsScreen> {
                                               letterSpacing: 0.20,
                                             ),
                                           ),
-                                          Text(
-                                            'Reset',
-                                            style: TextStyle(
-                                              color: Color(0xFF3366FF),
-                                              fontSize: 16,
-                                              fontFamily: 'SF Pro Display',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.30,
-                                              letterSpacing: 0.16,
+                                          InkWell(
+                                            onTap: () {
+                                              namecontroller.clear();
+                                              locationcontroller.clear();
+                                            },
+                                            child: Text(
+                                              'Reset',
+                                              style: TextStyle(
+                                                color: Color(0xFF3366FF),
+                                                fontSize: 16,
+                                                fontFamily: 'SF Pro Display',
+                                                fontWeight: FontWeight.w500,
+                                                height: 1.30,
+                                                letterSpacing: 0.16,
+                                              ),
                                             ),
                                           )
                                         ],
@@ -195,7 +176,10 @@ class _JobsScreenState extends State<JobsScreen> {
                                       Container(
                                         height: 60,
                                         child: TextFormField(
-                                          onChanged: (value) {},
+                                          controller: namecontroller,
+                                          onChanged: (value) {
+                                            name = value;
+                                          },
                                           onTap: () {},
                                           keyboardType: TextInputType.name,
                                           decoration: InputDecoration(
@@ -241,9 +225,12 @@ class _JobsScreenState extends State<JobsScreen> {
                                       Container(
                                         height: 60,
                                         child: TextFormField(
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            location = value;
+                                          },
                                           onTap: () {},
                                           keyboardType: TextInputType.name,
+                                          controller: locationcontroller,
                                           decoration: InputDecoration(
                                             hintText: 'Location',
                                             hintStyle: TextStyle(
@@ -287,6 +274,8 @@ class _JobsScreenState extends State<JobsScreen> {
                                       Container(
                                         height: 60,
                                         child: DropDownTextField(
+                                          clearOption: true,
+                                          controller: salarycontroller,
                                           dropDownList: dropdown,
                                           textFieldDecoration: InputDecoration(
                                             suffixIcon: Image.asset(
@@ -295,7 +284,7 @@ class _JobsScreenState extends State<JobsScreen> {
                                             prefixIcon: Image.asset(
                                               'assets/dollar-circle.png',
                                             ),
-                                            hintText: '\$5k-\$10k',
+                                            hintText: '17k-19k',
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -337,18 +326,25 @@ class _JobsScreenState extends State<JobsScreen> {
                                             istapped: istapped,
                                             text: 'Full Time',
                                             width: 90,
+                                            function: () {
+                                              jobtypelist.add("Full time");
+                                            },
                                           ),
                                           boxw12,
                                           JobTypeButton(
-                                            istapped: istapped,
+                                            istapped: istapped2,
                                             text: 'Remote',
                                             width: 80,
+                                            function: () {
+                                              jobtypelist.add("remote");
+                                            },
                                           ),
                                           boxw12,
                                           JobTypeButton(
                                             istapped: istapped,
                                             text: 'Contract',
                                             width: 85,
+                                            function: () {},
                                           ),
                                         ],
                                       ),
@@ -359,18 +355,21 @@ class _JobsScreenState extends State<JobsScreen> {
                                             istapped: istapped,
                                             text: 'Part Time',
                                             width: 95,
+                                            function: () {},
                                           ),
                                           boxw12,
                                           JobTypeButton(
                                             istapped: istapped,
                                             text: 'Onsite',
                                             width: 74,
+                                            function: () {},
                                           ),
                                           boxw12,
                                           JobTypeButton(
                                             istapped: istapped,
                                             text: 'Internship',
                                             width: 91,
+                                            function: () {},
                                           ),
                                         ],
                                       ),
@@ -400,7 +399,37 @@ class _JobsScreenState extends State<JobsScreen> {
                                               ),
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            setState(() {});
+                                            mystate;
+                                            mystate(
+                                              () {},
+                                            );
+
+                                            final prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            prefs.setBool(
+                                              "isfiltred",
+                                              true,
+                                            );
+                                            Navigator.pop(context);
+                                            filtred =
+                                                prefs.getBool("isfiltred")!;
+                                            jobProviderfilter.fetchJobs(
+                                              name,
+                                              location,
+                                              salarycontroller
+                                                  .dropDownValue!.value,
+                                              context,
+                                            );
+
+                                            setState(() {});
+                                            mystate;
+                                            mystate(
+                                              () {},
+                                            );
+                                          },
                                           child: Text(
                                             "Show Result",
                                             style: TextStyle(
@@ -473,56 +502,122 @@ class _JobsScreenState extends State<JobsScreen> {
               ),
             ),
             child: Center(
-              child: Text(
-                '${data!.length ?? ''} Job Saved',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF6B7280),
-                  fontSize: 14,
-                  fontFamily: 'SF Pro Display',
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.14,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Expanded(
-            child: Center(
-              child: data == null
-                  ? CircularProgressIndicator()
-                  : Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 24,
+              child: filtred
+                  ? Text(
+                      ' ${jobProviderfilter.jobs.length} jobs',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF6B7280),
+                        fontSize: 14,
+                        fontFamily: 'SF Pro Display',
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.14,
                       ),
-                      child: ListView.builder(
-                        itemCount: data!.length == 0 ? 0 : data!.length,
-                        itemBuilder: (context, index) {
-                          final jobItem = data![index] ?? {};
-                          String joblocation = jobItem['location'];
-                          final jobloc = joblocation.substring(0, 14);
-
-                          return CustomAllJobs(
-                            function: () async {
-                              await favoritesConnection.postDataWithId(
-                                jobItem['id'],
-                                context,
-                              );
-                            },
-                            networkimage: jobItem['image'] ?? '',
-                            jobname: jobItem['name'] ?? '',
-                            jobplace: '${jobItem['comp_name']}.${jobloc}' ?? '',
-                            jobdis: jobItem['job_time_type'] ?? '',
-                            jobtype: jobItem['job_type'] ?? '',
-                            jobsalary: jobItem['salary'] ?? '',
-                          );
-                        },
+                    )
+                  : Text(
+                      ' ${jobProvider.jobs.length} jobs',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF6B7280),
+                        fontSize: 14,
+                        fontFamily: 'SF Pro Display',
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.14,
                       ),
                     ),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
+          filtred
+              ? jobProviderfilter.jobs.isNotEmpty
+                  ? Expanded(
+                      child: Center(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 24,
+                          ),
+                          child: ListView.builder(
+                            itemCount: jobProviderfilter.jobs.length,
+                            itemBuilder: (context, index) {
+                              final loc =
+                                  jobProviderfilter.jobs[index].location;
+                              final jobloc = loc.substring(0, 14);
+                              return CustomAllJobs(
+                                function: () async {
+                                  await favoritesConnection.postDataWithId(
+                                    jobProviderfilter.jobs[index].id,
+                                    context,
+                                  );
+                                },
+                                networkimage:
+                                    jobProviderfilter.jobs[index].image,
+                                jobname: jobProviderfilter.jobs[index].name,
+                                jobplace:
+                                    '${jobProviderfilter.jobs[index].comp_name}.${jobloc}',
+                                jobdis:
+                                    jobProviderfilter.jobs[index].job_time_type,
+                                jobtype: jobProviderfilter.jobs[index].job_type,
+                                jobsalary: jobProviderfilter.jobs[index].salary,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    )
+                  : Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          NoSearchFound(),
+                        ],
+                      ),
+                    )
+              : jobProvider.jobs.isNotEmpty
+                  ? Expanded(
+                      child: Center(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 24,
+                          ),
+                          child: ListView.builder(
+                            itemCount: jobProvider.jobs.length,
+                            itemBuilder: (context, index) {
+                              final loc = jobProvider.jobs[index].location;
+                              final jobloc = loc.substring(0, 14);
+                              return CustomAllJobs(
+                                function: () async {
+                                  await favoritesConnection.postDataWithId(
+                                    jobProvider.jobs[index].id,
+                                    context,
+                                  );
+                                },
+                                networkimage: jobProvider.jobs[index].image,
+                                jobname: jobProvider.jobs[index].name,
+                                jobplace:
+                                    '${jobProvider.jobs[index].comp_name}.${jobloc}',
+                                jobdis: jobProvider.jobs[index].job_time_type,
+                                jobtype: jobProvider.jobs[index].job_type,
+                                jobsalary: jobProvider.jobs[index].salary,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    )
+                  : Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          NoSearchFound(),
+                        ],
+                      ),
+                    ),
         ],
       ),
     );
@@ -572,24 +667,28 @@ class _JobsScreenState extends State<JobsScreen> {
                       istapped: istapped,
                       text: 'Remote',
                       width: 80,
+                      function: () {},
                     ),
                     boxw12,
                     JobTypeButton(
                       istapped: istapped,
                       text: 'Onsite',
                       width: 74,
+                      function: () {},
                     ),
                     boxw12,
                     JobTypeButton(
                       istapped: istapped,
                       text: 'Hybrid',
                       width: 74,
+                      function: () {},
                     ),
                     boxw12,
                     JobTypeButton(
                       istapped: istapped,
                       text: 'Any',
                       width: 60,
+                      function: () {},
                     ),
                   ],
                 ),

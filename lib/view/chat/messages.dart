@@ -69,7 +69,6 @@ class _MessagesState extends State<Messages> {
                       onchange: funcnull,
                       onsub: funcnull,
                       ontap: funcnull,
-                      textEditingController: TextEditingController(),
                       width: 280,
                     ),
                     InkWell(
