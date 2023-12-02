@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobsque_amit_project/data/provider/applyjobprovider.dart';
+import 'package:jobsque_amit_project/data/provider/job_provider.dart';
 import 'package:jobsque_amit_project/view/apply_job/applyjob3.dart';
+import 'package:jobsque_amit_project/view/complete_profile.dart/completeprofile.dart';
+import 'package:jobsque_amit_project/widgets/custom_jobtypecont.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -40,8 +43,13 @@ class _ApplyJob2State extends State<ApplyJob2> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SvgPicture.asset(
-                    'assets/arrow-left.svg',
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: SvgPicture.asset(
+                      'assets/arrow-left.svg',
+                    ),
                   ),
                   SizedBox(
                     width: 110,
@@ -209,7 +217,7 @@ class _ApplyJob2State extends State<ApplyJob2> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return ApplyJob3();
+                        return CompleteProfile();
                       },
                     ),
                   );

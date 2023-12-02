@@ -16,6 +16,7 @@ void main() {
     await tester.pumpWidget(
       MyApp(
         rememberme: true,
+        showregister: true,
       ),
     );
 

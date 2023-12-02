@@ -4,6 +4,7 @@ import 'package:jobsque_amit_project/view/apply_job/active_appliedjobs.dart';
 import 'package:jobsque_amit_project/view/chat/messages.dart';
 import 'package:jobsque_amit_project/view/home/homescreenwidget.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/profile.dart';
+import 'package:jobsque_amit_project/view/saved_notification.dart/favorites.dart';
 import 'package:jobsque_amit_project/view/saved_notification.dart/notificatio_ui.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     HomeScreenWidget(),
     Messages(),
     Activejobs(),
-    NotificationUi(),
+    Favorites(),
     Profile(),
   ];
 

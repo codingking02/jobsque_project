@@ -104,8 +104,13 @@ class _SearchValueState extends State<SearchValue> {
                   margin: EdgeInsets.only(
                     top: 10,
                   ),
-                  child: getSvgPicture(
-                    'assets/arrow-left.svg',
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: getSvgPicture(
+                      'assets/arrow-left.svg',
+                    ),
                   ),
                 ),
                 Container(

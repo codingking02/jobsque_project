@@ -35,8 +35,13 @@ class _ActivejobsState extends State<Activejobs> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(
-                          'assets/arrow-left.svg',
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: SvgPicture.asset(
+                            'assets/arrow-left.svg',
+                          ),
                         ),
                         SizedBox(
                           width: 110,

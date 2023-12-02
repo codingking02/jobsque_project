@@ -42,8 +42,13 @@ class _ApplyJob1State extends State<ApplyJob1> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(
-                          'assets/arrow-left.svg',
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: SvgPicture.asset(
+                            'assets/arrow-left.svg',
+                          ),
                         ),
                         SizedBox(
                           width: 110,

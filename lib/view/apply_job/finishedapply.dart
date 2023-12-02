@@ -34,8 +34,13 @@ class _FinishedApplyState extends State<FinishedApply> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(
-                          'assets/arrow-left.svg',
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: SvgPicture.asset(
+                            'assets/arrow-left.svg',
+                          ),
                         ),
                         SizedBox(
                           width: 110,

@@ -1,5 +1,6 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/twostepactivation.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class TwoStepVerification extends StatefulWidget {
@@ -38,6 +39,9 @@ class _TwoStepVerificationState extends State<TwoStepVerification> {
                       getheader(
                         text: 'Two-step-verification',
                         width: 60,
+                        function: () {
+                          Navigator.pop(context);
+                        },
                       ),
                       SizedBox(
                         height: 30,
@@ -211,7 +215,14 @@ class _TwoStepVerificationState extends State<TwoStepVerification> {
                         1,
                       ),
                     )),
-                onPressed: () async {},
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TwoStepActivation(),
+                    ),
+                  );
+                },
                 child: Text(
                   'Save',
                   textAlign: TextAlign.center,

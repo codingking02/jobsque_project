@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobsque_amit_project/connections/login_controller.dart';
 import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
+import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
+import 'package:jobsque_amit_project/view/login/login.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/editprofile.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/language.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/notificationpro.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/portfolio.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/security.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,8 +49,18 @@ class _ProfileState extends State<Profile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(
-                          'assets/arrow-left.svg',
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ),
+                            );
+                          },
+                          child: SvgPicture.asset(
+                            'assets/arrow-left.svg',
+                          ),
                         ),
                         Text(
                           'Profile',
@@ -58,8 +74,18 @@ class _ProfileState extends State<Profile> {
                             letterSpacing: 0.20,
                           ),
                         ),
-                        getSvgPicture(
-                          'assets/logout.svg',
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                            );
+                          },
+                          child: getSvgPicture(
+                            'assets/logout.svg',
+                          ),
                         ),
                       ],
                     ),
@@ -177,8 +203,18 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 16,
                 ),
-                getSvgPicture(
-                  'assets/editprofile.svg',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => editprofile(),
+                      ),
+                    );
+                  },
+                  child: getSvgPicture(
+                    'assets/editprofile.svg',
+                  ),
                 ),
                 InkWell(
                   onTap: () {
@@ -195,14 +231,44 @@ class _ProfileState extends State<Profile> {
                     'assets/portfolio.svg',
                   ),
                 ),
-                getSvgPicture(
-                  'assets/Lang.svg',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Language(),
+                      ),
+                    );
+                  },
+                  child: getSvgPicture(
+                    'assets/Lang.svg',
+                  ),
                 ),
-                getSvgPicture(
-                  'assets/notificationprofile.svg',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotificationSettings(),
+                      ),
+                    );
+                  },
+                  child: getSvgPicture(
+                    'assets/notificationprofile.svg',
+                  ),
                 ),
-                getSvgPicture(
-                  'assets/security.svg',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Security(),
+                      ),
+                    );
+                  },
+                  child: getSvgPicture(
+                    'assets/security.svg',
+                  ),
                 ),
                 SizedBox(
                   height: 32,

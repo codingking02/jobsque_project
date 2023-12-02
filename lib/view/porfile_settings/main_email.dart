@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/profile.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 class MainEmail extends StatefulWidget {
@@ -31,6 +32,9 @@ class _MainEmailState extends State<MainEmail> {
                   getheader(
                     text: 'Email Address',
                     width: 110,
+                    function: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   SizedBox(
                     height: 44,
@@ -140,7 +144,14 @@ class _MainEmailState extends State<MainEmail> {
                               1,
                             ),
                           )),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Profile(),
+                          ),
+                        );
+                      },
                       child: Text(
                         'Save',
                         textAlign: TextAlign.center,

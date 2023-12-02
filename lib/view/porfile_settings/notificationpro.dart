@@ -28,7 +28,13 @@ class _NotificationSettingsState extends State<NotificationSettings> {
             margin: EdgeInsets.symmetric(
               horizontal: 24,
             ),
-            child: getheader(text: 'Notification', width: 110),
+            child: getheader(
+              text: 'Notification',
+              width: 110,
+              function: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
           Expanded(
             child: Container(

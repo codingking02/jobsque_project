@@ -6,6 +6,7 @@ import 'package:jobsque_amit_project/view/apply_job/applyjob1.dart';
 import 'package:jobsque_amit_project/widgets/images.dart';
 import 'package:jobsque_amit_project/widgets/jobdetailwidget.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JobDetail extends StatefulWidget {
   JobDetail({super.key});
@@ -15,6 +16,18 @@ class JobDetail extends StatefulWidget {
 }
 
 class _JobDetailState extends State<JobDetail> {
+  String selectedImage = '';
+  getsavedimage() async {
+    final prefs = await SharedPreferences.getInstance();
+    selectedImage = prefs.getString('selectedImage')!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getsavedimage();
+  }
+
   bool ispressedDes = true;
   bool ispressedComp = false;
   bool ispressedPeo = false;
@@ -39,6 +52,7 @@ class _JobDetailState extends State<JobDetail> {
               children: [
                 InkWell(
                   onTap: () {
+                    Navigator.pop(context);
                     setState(() {});
                   },
                   child: Image.asset(
@@ -58,7 +72,7 @@ class _JobDetailState extends State<JobDetail> {
                   ),
                 ),
                 Image.asset(
-                  'assets/bluearchive.png',
+                  'assets/blackarchive.png',
                 ),
               ],
             ),

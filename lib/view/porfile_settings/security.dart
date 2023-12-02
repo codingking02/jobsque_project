@@ -2,6 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/change_password.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/main_email.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/phone_number.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/two_step_verification.dart';
 import 'package:jobsque_amit_project/widgets/custom_security.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
@@ -29,6 +33,9 @@ class Security extends StatelessWidget {
             child: getheader(
               text: 'Login and Security',
               width: 70,
+              function: () {
+                Navigator.pop(context);
+              },
             ),
           ),
           Expanded(
@@ -49,6 +56,14 @@ class Security extends StatelessWidget {
                     text: 'Email Address',
                     isbool: isemail,
                     righttext: '',
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainEmail(),
+                        ),
+                      );
+                    },
                   ),
                   Divider(
                     thickness: 1.5,
@@ -60,6 +75,14 @@ class Security extends StatelessWidget {
                     text: 'Phone number',
                     isbool: isphone,
                     righttext: '',
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PhoneNumber(),
+                        ),
+                      );
+                    },
                   ),
                   Divider(
                     thickness: 1.5,
@@ -71,6 +94,14 @@ class Security extends StatelessWidget {
                     text: 'Change password',
                     isbool: ischange,
                     righttext: '',
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangePassword(),
+                        ),
+                      );
+                    },
                   ),
                   Divider(
                     thickness: 1.5,
@@ -82,6 +113,14 @@ class Security extends StatelessWidget {
                     text: 'Two-step verification',
                     isbool: istwostep,
                     righttext: 'Non active',
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TwoStepVerification(),
+                        ),
+                      );
+                    },
                   ),
                   Divider(
                     thickness: 1.5,
@@ -93,6 +132,7 @@ class Security extends StatelessWidget {
                     text: 'Face Id',
                     isbool: isface,
                     righttext: '',
+                    function: () {},
                   ),
                   Divider(
                     thickness: 1.5,

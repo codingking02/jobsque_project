@@ -73,10 +73,11 @@ class LoginConnection {
             password,
           );
       context.read<UserIdProvider>().setuserid(jsonResponse["user"]["id"]);
+      print(context.read<UserIdProvider>().userid);
       final prefs = await SharedPreferences.getInstance();
 
       if (prefs.getBool("rememberme") == true) {
-        prefs.setString("userid", jsonResponse["user"]['id']);
+        prefs.setInt("userid", jsonResponse["user"]['id']);
         prefs.setString("token", jsonResponse["token"]);
         prefs.setString("Username", jsonResponse["user"]["name"]);
         prefs.setString("Username", jsonResponse["user"]["email"]);

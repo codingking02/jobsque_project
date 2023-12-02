@@ -6,11 +6,13 @@ class CustomSecurity extends StatefulWidget {
   String text;
   bool isbool;
   String righttext;
+  Function function;
   CustomSecurity({
     super.key,
     required this.text,
     required this.isbool,
     required this.righttext,
+    required this.function,
   });
 
   @override
@@ -85,8 +87,13 @@ class _CustomSecurityState extends State<CustomSecurity> {
                   SizedBox(
                     width: 10,
                   ),
-                  Image.asset(
-                    'assets/right-arrow.png',
+                  InkWell(
+                    onTap: () {
+                      widget.function();
+                    },
+                    child: Image.asset(
+                      'assets/right-arrow.png',
+                    ),
                   ),
                 ],
               )

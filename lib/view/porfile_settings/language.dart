@@ -28,6 +28,9 @@ class Language extends StatelessWidget {
                     getheader(
                       text: 'Language',
                       width: 110,
+                      function: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     SizedBox(
                       height: 25,

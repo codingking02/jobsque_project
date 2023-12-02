@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/connections/profile_controller.dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
 import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/profile.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +43,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   getheader(
                     text: 'Change Password',
                     width: 70,
+                    function: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   SizedBox(
                     height: 44,
@@ -415,6 +419,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                             passcontroller.text,
                             context,
                           );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Profile(),
+                            ),
+                          );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -425,7 +435,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                           );
                         }
 
-                        print(context.read<PasswordProvider>().password);
+                        print(
+                          context.read<PasswordProvider>().password,
+                        );
                       },
                       child: Text(
                         'Save',

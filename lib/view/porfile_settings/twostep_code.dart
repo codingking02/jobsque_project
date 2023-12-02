@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jobsque_amit_project/data/provider/otpprovider..dart';
 import 'package:jobsque_amit_project/data/provider/phonenumberprovider.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/profile.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
@@ -61,6 +62,9 @@ class _TwoStepCodeState extends State<TwoStepCode> {
                   getheader(
                     text: 'Two-step verification',
                     width: 60,
+                    function: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   SizedBox(
                     height: 36,
@@ -105,6 +109,56 @@ class _TwoStepCodeState extends State<TwoStepCode> {
                     pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                     showCursor: true,
                     onCompleted: (pin) => print(pin),
+                  ),
+                  SizedBox(
+                    height: 450,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ),
+                    width: 350,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                1000,
+                              ),
+                            ),
+                          ),
+                          backgroundColor: MaterialStatePropertyAll(
+                            Color.fromRGBO(
+                              51,
+                              102,
+                              255,
+                              1,
+                            ),
+                          )),
+                      onPressed: () async {
+                        pincontroller.text == context.read<OtpProvider>().otp
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Profile(),
+                                ),
+                              )
+                            : null;
+                      },
+                      child: Text(
+                        'Verify',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'SF Pro Display',
+                          fontWeight: FontWeight.w500,
+                          height: 1.30,
+                          letterSpacing: 0.16,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

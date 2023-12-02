@@ -36,7 +36,6 @@ Widget getpageview(
   BuildContext context,
   String mainimage,
   String logoimage,
-  String topbarimage,
   String titleimage,
 ) {
   return Container(
@@ -88,9 +87,7 @@ Widget getpageview(
             ],
           ),
         ),
-        SvgPicture.asset(
-          topbarimage,
-        ),
+        gettopbarimage(),
         Container(
           margin: EdgeInsets.only(
             left: 20,
@@ -369,11 +366,19 @@ Widget textforapplyjobtextfield(
 Widget getheader({
   required String text,
   required double width,
+  required Function function,
 }) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      SvgPicture.asset('assets/arrow-left.svg'),
+      InkWell(
+        onTap: () {
+          function();
+        },
+        child: SvgPicture.asset(
+          'assets/arrow-left.svg',
+        ),
+      ),
       SizedBox(
         width: width,
       ),

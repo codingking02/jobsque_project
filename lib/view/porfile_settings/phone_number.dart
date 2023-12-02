@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/profile.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -34,6 +35,9 @@ class _PhoneNumberState extends State<PhoneNumber> {
                   getheader(
                     text: 'Phone Number',
                     width: 110,
+                    function: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   SizedBox(
                     height: 44,
@@ -179,7 +183,14 @@ class _PhoneNumberState extends State<PhoneNumber> {
                               1,
                             ),
                           )),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Profile(),
+                          ),
+                        );
+                      },
                       child: Text(
                         'Save',
                         textAlign: TextAlign.center,

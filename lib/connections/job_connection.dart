@@ -89,30 +89,21 @@ class JobConnection {
     request.fields['jobs_id'] = jobid.toString();
     request.fields['user_id'] = userid.toString();
 
-    try {
-      final response = await request.send();
+    final response = await request.send();
 
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.bytesToString();
-        final jsonResponse = json.decode(responseData);
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.bytesToString();
+      final jsonResponse = json.decode(responseData);
 
-        print(
-          'API response: $jsonResponse',
-        );
-        // Request successful, handle the response here if needed
-        print('Files uploaded successfully');
-      } else {
-        final responseData = await response.stream.bytesToString();
-        final jsonResponse = json.decode(responseData);
-        print(
-          'API response: $jsonResponse',
-        );
-        // Request failed, handle the error here
-        print('Failed to upload files. Status code: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Exception occurred, handle the error here
-      print('Error while uploading files: $e');
+      print(
+        'API response: $jsonResponse',
+      );
+      // Request successful, handle the response here if needed
+      print('Files uploaded successfully');
+    } else {
+      // Request   failed, handle the error here
+
+      print('Failed to upload files. Status code: ${response.statusCode}');
     }
   }
 

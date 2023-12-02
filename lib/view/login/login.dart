@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jobsque_amit_project/connections/login_controller.dart';
 import 'package:jobsque_amit_project/connections/register_controller.dart';
 import 'package:jobsque_amit_project/data/provider/passwordprovider.dart';
+import 'package:jobsque_amit_project/view/complete_profile.dart/experience.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/view/home/jobs_screen.dart';
 import 'package:jobsque_amit_project/view/home/searchvalue.dart';

@@ -40,7 +40,13 @@ class _PortfolioState extends State<Portfolio> {
             ),
             child: Column(
               children: [
-                getheader(text: 'Portfolio', width: 110),
+                getheader(
+                  text: 'Portfolio',
+                  width: 110,
+                  function: () {
+                    Navigator.pop(context);
+                  },
+                ),
                 SizedBox(
                   height: 36,
                 ),

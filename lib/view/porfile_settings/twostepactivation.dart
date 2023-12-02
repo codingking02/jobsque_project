@@ -53,6 +53,9 @@ class _TwoStepActivationState extends State<TwoStepActivation> {
                   getheader(
                     text: 'Two-step verification',
                     width: 60,
+                    function: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   SizedBox(
                     height: 36,

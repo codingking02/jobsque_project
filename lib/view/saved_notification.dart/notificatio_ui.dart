@@ -9,8 +9,13 @@ class NotificationUi extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          getSvgPicture(
-            'assets/Notification.svg',
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: getSvgPicture(
+              'assets/Notification.svg',
+            ),
           ),
           Positioned(
             left: 24,

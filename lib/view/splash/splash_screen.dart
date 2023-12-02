@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jobsque_amit_project/view/register/register_screen.dart';
 import 'package:jobsque_amit_project/widgets/images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../slider/slider_screens.dart';
 
@@ -77,7 +79,8 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> splashduratiion() {
+  Future<void> splashduratiion() async {
+    final prefs = await SharedPreferences.getInstance();
     return Future.delayed(
       Duration(
         seconds: 3,
@@ -89,7 +92,9 @@ class _SplashScreenState extends State<SplashScreen> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return SliderUi();
+              return prefs.getBool("showlogin") == true
+                  ? Register()
+                  : SliderUi();
             },
           ),
         );

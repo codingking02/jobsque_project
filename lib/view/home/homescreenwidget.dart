@@ -10,6 +10,8 @@ import 'package:jobsque_amit_project/data/provider/tokenprovider.dart';
 import 'package:jobsque_amit_project/data/provider/useridprovider.dart';
 import 'package:jobsque_amit_project/view/apply_job/job_deatil.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
+import 'package:jobsque_amit_project/view/home/searchvalue.dart';
+import 'package:jobsque_amit_project/view/saved_notification.dart/notificatio_ui.dart';
 import 'package:jobsque_amit_project/widgets/customalljobwidget.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';
 import 'package:jobsque_amit_project/widgets/customsuggestedjob.dart';
@@ -152,8 +154,18 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                         ),
                       ),
                     ),
-                    child: Image.asset(
-                      'assets/notification.png',
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NotificationUi(),
+                          ),
+                        );
+                      },
+                      child: Image.asset(
+                        'assets/notification.png',
+                      ),
                     ),
                   ),
                 ],
@@ -176,6 +188,14 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       istapped = true;
                       issubmitted = false;
                       ischange = false;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SearchValue();
+                          },
+                        ),
+                      );
                     },
                     onsub: () {
                       istapped = false;

@@ -264,6 +264,22 @@ class editprofile extends StatelessWidget {
     );
   }
 
+  Widget geteducationtext(
+    String text,
+  ) {
+    return Text(
+      text,
+      style: TextStyle(
+        color: Color(0xFF9CA3AF),
+        fontSize: 16,
+        fontFamily: 'SF Pro Display',
+        fontWeight: FontWeight.w500,
+        height: 0.08,
+        letterSpacing: 0.16,
+      ),
+    );
+  }
+
   Widget gettextfield({
     required TextEditingController controller,
     required String hintext,
