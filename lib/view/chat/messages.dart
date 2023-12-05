@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobsque_amit_project/view/chat/chat_ui.dart';
 import 'package:jobsque_amit_project/widgets/customsearchbar.dart';
 import '../../widgets/widgets.dart';
 
@@ -250,8 +251,18 @@ class _MessagesState extends State<Messages> {
                                   SizedBox(
                                     height: 28,
                                   ),
-                                  getSvgPicture(
-                                    'assets/twitterchat.svg',
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ChatUi(),
+                                        ),
+                                      );
+                                    },
+                                    child: getSvgPicture(
+                                      'assets/twitterchat.svg',
+                                    ),
                                   ),
                                   getSvgPicture(
                                     'assets/gojek.svg',

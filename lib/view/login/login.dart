@@ -91,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 margin: EdgeInsets.symmetric(
                   horizontal: 24,
                 ),
-                height: 60,
                 child: TextFormField(
                   onChanged: (value) {
                     if (value.length > 0) {
@@ -167,7 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 margin: EdgeInsets.symmetric(
                   horizontal: 24,
                 ),
-                height: 60,
                 child: TextFormField(
                   onChanged: (value) {
                     if (value.length > 0) {

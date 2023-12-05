@@ -65,7 +65,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     height: 8,
                   ),
                   Container(
-                    height: 60,
                     child: TextFormField(
                       onChanged: (value) {
                         if (value.length > 0) {
@@ -154,7 +153,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     height: 8,
                   ),
                   Container(
-                    height: 60,
                     child: TextFormField(
                       onChanged: (value) {
                         if (value.length > 0) {
@@ -279,7 +277,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     height: 8,
                   ),
                   Container(
-                    height: 60,
                     child: TextFormField(
                       onChanged: (value) {
                         if (value.length > 0) {

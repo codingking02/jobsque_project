@@ -101,7 +101,6 @@ class _RegisterState extends State<Register> {
                     top: 44,
                   ),
                   child: Container(
-                    height: 60,
                     child: TextFormField(
                       onChanged: (value) {
                         if (value.length > 0) {
@@ -159,7 +158,6 @@ class _RegisterState extends State<Register> {
                   height: 16,
                 ),
                 Container(
-                  height: 60,
                   child: TextFormField(
                     onChanged: (value) {
                       if (value.length > 0) {
@@ -208,11 +206,6 @@ class _RegisterState extends State<Register> {
                           8,
                         ),
                       ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.red,
-                        ),
-                      ),
                     ),
                     validator: (String? value) {
                       final bool emailValid = RegExp(
@@ -232,7 +225,6 @@ class _RegisterState extends State<Register> {
                   height: 16,
                 ),
                 Container(
-                  height: 60,
                   child: TextFormField(
                     onChanged: (value) {
                       if (value.length > 0) {
@@ -299,11 +291,6 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(
                           8,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.red,
                         ),
                       ),
                     ),

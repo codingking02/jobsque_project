@@ -5,10 +5,13 @@ import 'package:jobsque_amit_project/data/provider/bioprovider.dart';
 import 'package:jobsque_amit_project/view/home/homesearchscree.dart';
 import 'package:jobsque_amit_project/view/login/login.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/editprofile.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/help_center.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/language.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/notificationpro.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/portfolio.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/privacy.dart';
 import 'package:jobsque_amit_project/view/porfile_settings/security.dart';
+import 'package:jobsque_amit_project/view/porfile_settings/terms_condition.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,7 +78,12 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.setBool(
+                              "rememberme",
+                              false,
+                            );
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -286,14 +294,44 @@ class _ProfileState extends State<Profile> {
                 getSvgPicture(
                   'assets/accesebility.svg',
                 ),
-                getSvgPicture(
-                  'assets/help.svg',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HelpCenter(),
+                      ),
+                    );
+                  },
+                  child: getSvgPicture(
+                    'assets/help.svg',
+                  ),
                 ),
-                getSvgPicture(
-                  'assets/terms.svg',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsCondition(),
+                      ),
+                    );
+                  },
+                  child: getSvgPicture(
+                    'assets/terms.svg',
+                  ),
                 ),
-                getSvgPicture(
-                  'assets/privacy.svg',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PrivacyPolicy(),
+                      ),
+                    );
+                  },
+                  child: getSvgPicture(
+                    'assets/privacy.svg',
+                  ),
                 ),
               ],
             ),

@@ -3,148 +3,115 @@ import 'package:jobsque_amit_project/connections/profile_controller.dart';
 import 'package:jobsque_amit_project/widgets/widgets.dart';
 
 // ignore: must_be_immutable
-class Language extends StatelessWidget {
+class Language extends StatefulWidget {
   Language({super.key});
+
+  @override
+  State<Language> createState() => _LanguageState();
+}
+
+class _LanguageState extends State<Language> {
   ProfileConnection profileConnection = ProfileConnection();
+
+  List<String> languages = [
+    "English",
+    "Indonesia",
+    "Arabic",
+    "Chineese",
+    "Dutch",
+    "French",
+    "German",
+    "Japanese",
+    "Korean",
+    "Portuguese"
+  ];
+
+  bool istapped = false;
+
+  int selectedIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              gettopbarimage(),
-              SizedBox(
-                height: 25,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 24,
+          gettopbarimage(),
+          SizedBox(
+            height: 25,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
+            child: Column(
+              children: [
+                getheader(
+                  text: 'Language',
+                  width: 110,
+                  function: () {
+                    Navigator.pop(context);
+                  },
                 ),
-                child: Column(
-                  children: [
-                    getheader(
-                      text: 'Language',
-                      width: 110,
-                      function: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await profileConnection.updatelanguage("en", context);
-                      },
-                      child: getSvgPicture(
-                        'assets/Lang0.svg',
-                      ),
-                    ),
-                    getSvgPicture(
-                      'assets/Language1.svg',
-                    ),
-                    getSvgPicture(
-                      'assets/Language2.svg',
-                    ),
-                    getSvgPicture(
-                      'assets/Language3.svg',
-                    ),
-                    getSvgPicture(
-                      'assets/Language4.svg',
-                    ),
-                    getSvgPicture(
-                      'assets/Language5.svg',
-                    ),
-                    getSvgPicture(
-                      'assets/Language6.svg',
-                    ),
-                    getSvgPicture(
-                      'assets/Language7.svg',
-                    ),
-                    getSvgPicture(
-                      'assets/Language8.svg',
-                    ),
-                    getSvgPicture(
-                      'assets/Lang9.svg',
-                    ),
-                  ],
+                Container(
+                  height: 700,
+                  child: ListView.builder(
+                    itemCount: languages.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () async {
+                          setState(() {
+                            selectedIndex = index; // Update the selected index
+                          });
+                          await profileConnection.updatelanguage(
+                            languages[index],
+                            context,
+                          );
+                        },
+                        child: Container(
+                          height: 64,
+                          width: 1000,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    "assets/${languages[index]}.png",
+                                  ),
+                                  SizedBox(
+                                    width: 18,
+                                  ),
+                                  Text(
+                                    languages[index],
+                                    style: TextStyle(
+                                      color: Color(0xFF111827),
+                                      fontSize: 16,
+                                      fontFamily: 'SF Pro Display',
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0.16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              selectedIndex == index
+                                  ? Image.asset(
+                                      'assets/bluecircle.png',
+                                    )
+                                  : Image.asset(
+                                      'assets/circle.png',
+                                    ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              )
-            ],
-          ),
-          Positioned(
-            left: 24,
-            top: 142,
-            child: Image.asset(
-              'assets/England.png',
+              ],
             ),
-          ),
-          Positioned(
-            left: 24,
-            top: 205,
-            child: Image.asset(
-              'assets/Indonesia.png',
-            ),
-          ),
-          Positioned(
-            top: 270,
-            left: 24,
-            child: Image.asset(
-              'assets/Saudi.png',
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 332,
-            child: Image.asset(
-              'assets/China.png',
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 398,
-            child: Image.asset(
-              'assets/Netherlands.png',
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 525,
-            child: Image.asset(
-              'assets/Germany.png',
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 460,
-            child: Image.asset(
-              'assets/France.png',
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 588,
-            child: Image.asset(
-              'assets/Japan.png',
-            ),
-          ),
-          Positioned(
-            left: 26,
-            top: 653,
-            child: Image.asset(
-              'assets/Korea.png',
-            ),
-          ),
-          Positioned(
-            top: 717,
-            left: 24,
-            child: Image.asset(
-              'assets/Portugal.png',
-            ),
-          ),
+          )
         ],
       ),
     );

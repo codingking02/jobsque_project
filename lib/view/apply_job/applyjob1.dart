@@ -109,7 +109,6 @@ class _ApplyJob1State extends State<ApplyJob1> {
                     height: 8,
                   ),
                   Container(
-                    height: 60,
                     child: TextFormField(
                       controller: namecontroller,
                       onChanged: (value) {
@@ -170,7 +169,6 @@ class _ApplyJob1State extends State<ApplyJob1> {
                     height: 8,
                   ),
                   Container(
-                    height: 60,
                     child: TextFormField(
                       controller: emailcontroller,
                       onChanged: (value) {
@@ -248,7 +246,6 @@ class _ApplyJob1State extends State<ApplyJob1> {
                     height: 8,
                   ),
                   Container(
-                    height: 60,
                     child: TextFormField(
                       focusNode: inputFocusNode,
                       keyboardType: TextInputType.phone,

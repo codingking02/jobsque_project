@@ -67,7 +67,6 @@ class _TwoStepActivationState extends State<TwoStepActivation> {
                     height: 16,
                   ),
                   Container(
-                    height: 60,
                     child: TextFormField(
                       controller: phonenumbercontroller,
                       focusNode: inputFocusNode,
@@ -155,7 +154,6 @@ class _TwoStepActivationState extends State<TwoStepActivation> {
                     height: 15,
                   ),
                   Container(
-                    height: 60,
                     child: TextFormField(
                       onChanged: (value) {
                         if (value.length > 0) {

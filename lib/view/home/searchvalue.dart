@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jobsque_amit_project/data/provider/job_provider.dart';
 import 'package:jobsque_amit_project/data/provider/job_search_provider.dart';
 import 'package:jobsque_amit_project/view/home/jobs_screen.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-
-import '../../widgets/customsearchbar.dart';
 import '../../widgets/widgets.dart';
 
 class SearchValue extends StatefulWidget {
@@ -30,46 +27,14 @@ class _SearchValueState extends State<SearchValue> {
     super.dispose();
   }
 
-  late Future<Database> _database;
-
   @override
   void initState() {
     super.initState();
-    _database = initializeDatabase();
-    fetchTextsFromDatabase();
-  }
-
-  Future<Database> initializeDatabase() async {
-    return openDatabase(
-      join(await getDatabasesPath(), 'text_database.db'),
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE texts(id INTEGER PRIMARY KEY, text TEXT)",
-        );
-      },
-      version: 1,
-    );
-  }
-
-  Future<void> fetchTextsFromDatabase() async {
-    final Database db = await _database;
-    final List<Map<String, dynamic>> maps = await db.query('texts');
-    setState(() {
-      recent_searches = List.generate(maps.length, (index) {
-        return maps[index]['text'];
-      });
-    });
-  }
-
-  Future<void> addTextToDatabase(String text) async {
-    final Database db = await _database;
-    await db.insert('texts', {'text': text});
   }
 
   void addTextToList() {
     String newText = searchcontroller.text;
     if (newText.isNotEmpty && !recent_searches.contains(newText)) {
-      addTextToDatabase(newText);
       setState(() {
         recent_searches.add(newText);
         searchcontroller.clear();
