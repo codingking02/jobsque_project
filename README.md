@@ -1,16 +1,26 @@
-# jobsque_amit_project
+## 💼 Jobsque – Job Application App
+```markdown
+# 💼 Jobsque App
 
-A new Flutter project.
+A **job portal application** that allows users to create profiles, upload resumes, and apply for jobs seamlessly.  
 
-## Getting Started
+## 🚀 Features
+- 🔐 Secure login & signup with API
+- 🛡️ Two-Factor Authentication (2FA)
+- 👤 Dynamic user profile management
+- 📂 Resume uploads (PDF)
+- 🔎 Job search & application
+- 💾 Persistent data with Provider
 
-This project is a starting point for a Flutter application.
+## 🛠️ Tech Stack
+- Flutter, Dart
+- Provider (State Management)
+- REST API
+- SharedPreferences
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ⚙️ Installation
+```bash
+git clone https://github.com/codingking02/jobsque_project.git
+cd jobsque_project
+flutter pub get
+flutter run
